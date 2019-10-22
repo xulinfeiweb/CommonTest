@@ -267,7 +267,7 @@ namespace PDF_Service
                 data.Add("OurRefDate", strArr[3] + "-" + strArr[1].Trim() + "-" + strArr[2]);
             }
             #endregion
-            #region Address
+            #region  PDF地址信息 Address
             int curr_index = dataArr.IndexOf("______________________________________________________________________________");
             int index_add = curr_index - 1;
             if (index_add >= 0)
