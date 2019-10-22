@@ -1,0 +1,786 @@
+﻿$(function () {
+    //IE鍏煎鎬�
+    if (window["context"] == undefined) {
+        if (!window.location.origin) {
+            window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
+        }
+        window["context"] = location.origin + "/V6.0";
+    }
+
+    changeFooterPosition();
+    //瀵艰埅婊戝潡hover
+    $('.nav').moveline({
+        'zIndex': '-1'
+    });
+
+    window.onresize = window.onscroll = function () {
+        changeFooterPosition();
+        //瀵艰埅婊戝潡hover
+        $('.nav').moveline({
+            'zIndex': '-1'
+        });
+    }
+    //椤甸潰鐧诲綍鏉冮檺鎺у埗
+    isJudgingLogin();
+});
+
+function isJudgingLogin() {
+    var href = window.location.href;
+    var isJudgingLoginStatus = true;	//true涓洪渶鍦ㄨ繖鍒ゆ柇鏄惁鐧诲綍
+    var reg;
+    var withoutJudgingLoginList = ['/pages/aftersales/', '/pages/service/', '/pages/dengta/', 'collectIntention.html'];	//闇€鐧诲綍鏉冮檺椤甸潰鍒楄〃
+    for (var n in withoutJudgingLoginList) {
+        reg = new RegExp(withoutJudgingLoginList[n]);
+        if (href.search(reg) == -1) {
+            isJudgingLoginStatus = true;
+        } else {
+            isJudgingLoginStatus = false;
+            return;
+        }
+    }
+    isLogin();	//鏄惁鐧诲綍
+}
+
+function isLogin() {
+    $.ajax({
+        type: "post",
+        url: window.location.origin + "/loginUser.pub",
+        success: function (res) {
+            if (res.success) {
+                $('.header .header-right').hide();
+                var name = res.accountInfo.accountType == 5 ? res.accountInfo.mobile : res.accountInfo.loginName;
+				$('.header .user-center').show().find('a').html(name);
+                hasNewMessage()   //鏄惁鏈夋柊娑堟伅
+            } else {
+                $('.header .header-right').show();
+                $('.header .user-center').hide()
+                var login = new Login();
+                var userAgent = navigator.userAgent.toLowerCase();
+                login.getBrowser();
+            }
+        }
+    })
+}
+
+function changeFooterPosition() {
+    var windowHeight = $(window).height();
+    var windowWidth = $(window).width();
+    var scrollTop = $(document).scrollTop();
+    var minHeight = windowHeight > 775 ? windowHeight : 775;
+    $('#main-wrap').css('min-height', minHeight);
+    var leftNavHeight = $('#main-wrap').height() - scrollTop;
+    var left = $('.main').css('margin-left');
+    $('#header-wrap').css('position', 'fixed');
+    $('.left-nav').css({
+        left: left,
+        height: leftNavHeight,
+        display: 'block',
+        position: 'fixed'
+    })
+    if (windowWidth < 1050) {
+        var mainHeight = $('#main-wrap').height();
+        $('#header-wrap').css('position', 'absolute');
+        $('.left-nav').css({
+            height: mainHeight,
+            position: 'absolute'
+        })
+    }
+    $('#footer-wrap').css('visibility', 'visible');
+}
+
+function hasNewMessage() {    //鏄惁鏈夋柊娑堟伅
+    $.ajax({
+        type: "post",
+        url: '/msg/queryMsg.pvt',
+        success: function (res) {
+            if (res.success && res.accountMsgNum != 0) {
+                $('.user-center').find('.red-dot').show();
+                $('.user-center').find('.msg').attr('title', '浣犳湁鏂扮殑娑堟伅');
+            }
+            $('.user-center').find('.msg').click(function () {
+                var url = window.location.origin + '/message.html';
+                window.location.href = url;
+            })
+        }
+    });
+
+
+}
+
+function Login(returnUrl) {
+    this.isRemember = false;
+    this.userID = false;
+    this.password = false;
+    this.imgCode = false;
+    this.isDengTa = false;
+    this.returnUrl = returnUrl || null;
+    this.origin = window.location.origin;
+    this.userIp = "";
+    this.browser = "";
+    this.loginArea = "";
+    this.isFill = false;
+    this.verifyType = 1; //1 涓烘粦鍔ㄩ獙璇� 锛�2涓哄浘鐗囬獙璇�
+	
+	this.wechatSwitch();  //寰俊鎵爜寮€鍏�
+    this.getCaptchaType();	//鑾峰彇楠岃瘉鐮佺被鍨�
+    this.showLoginPage();  //鏄剧ず鐧诲綍寮圭獥
+    this.cancalLogin();    //鍙栨秷鐧诲綍
+    this.checkIsRemember();  //鍒ゆ柇鏄惁鏈夎浣忓瘑鐮�
+    this.viewPassword();     //鏌ョ湅瀵嗙爜
+    this.toForgetPassword(); //蹇樿瀵嗙爜
+    this.deliverPassword();  //瀵嗙爜妗嗛棿鍊煎悓姝�
+    this.switchLoginMold();  //鍒囨崲璐︽埛绫诲瀷
+    this.judgeUserID();      //璐﹀彿楠岃瘉
+    this.checkPassword();  //瀵嗙爜楠岃瘉
+    this.toLogin();        //鐐瑰嚮鐧诲綍
+
+}
+
+Login.prototype.wechatSwitch = function(){
+	var oSelf = this;
+	$.ajax({
+            type: "post",
+            url: '/weChat/switch.pub',
+            success: function (res) {
+            	if(res.success){ //寮€
+            		$('.login-title .commonTitle').css('display','inline-block');
+            		$('.active-line').show();
+            		oSelf.switchLoginTab();  //鎵爜鐧诲綍涓庤处鍙峰瘑鐮佺櫥褰曞垏鎹�
+            		var loginContent = $('.login .wxlogin-content');
+            		if(loginContent.length != 0){
+            			oSelf.wechatAuth();  //寰俊鎺堟潈浜岀淮鐮佹壂鐮佺櫥褰�
+            		}
+            	}else{	//鍏�
+            		$('.wxlogin-content').remove();
+            		$('.login-title .wx-title, .active-line').remove();
+            		$('.login-title .title').css({
+            			'display': 'inline-block',
+            			'width': '100%'
+            		});
+            	}
+            }
+        }
+    )
+}
+
+Login.prototype.switchLoginTab = function(){
+	$(".login .login-title .title").click(function () {
+	    $(".login-title .active-line").animate({left: '72.5'}, "fast", function () {
+	        $(".login-content").show();
+	        $(".wxlogin-content").hide();
+	    });
+	});
+	$(".login .login-title .wx-title").click(function () {
+	    $(".login-title .active-line").animate({left: '397.5'}, "fast", function () {
+	        $(".login-content").hide();
+	        $(".wxlogin-content").show();
+	    });
+	});
+}
+
+Login.prototype.wechatAuth = function(){ // 寰俊鎵爜鐧婚檰
+	var origin = location.protocol + "//" + location.hostname + (location.port ? ':' + location.port : '');
+	var returnUrl;
+	if(location.pathname == "/pages/account/login.html"){
+		if(document.referrer.indexOf("/pages/account/login.html") == -1){
+			returnUrl = document.referrer || origin;
+		}else{
+			returnUrl = origin;
+		}
+	}else{
+		returnUrl = origin + location.pathname;
+	}
+	var redirectUrl = encodeURIComponent(origin + "/weChat/wechatLogin.pub?redirectUrl=" + returnUrl);
+	var state = (new Date()).getTime();
+	var obj = new WxLogin({
+	    self_redirect: false,
+	    id: "qrCode-content",
+	    appid: "wxee14ecd016ff4808",
+	    scope: "snsapi_login",
+	    redirect_uri:redirectUrl,
+	    state: state,
+	    style: "",
+	    href: ""
+	});
+}
+
+Login.prototype.getCaptchaType = function () {
+    var oSelf = this;
+    $.ajax({
+            type: "post",
+            url: '/verifyCodeType.pub',
+            success: function (res) {
+                if (res.success) {
+                    oSelf.verifyType = res.verifyCode;
+                    if (oSelf.verifyType == 1) {
+                        $('.login .imgCode').hide();
+                        $('.login .login-content').css('padding-top', '50px');
+                        $('.login').height('500px');
+                        oSelf.addCaptchaDiv();
+                    } else {
+                        $('.login .imgCode').show();
+                        $('.login').height('562px');
+                        oSelf.getImgCode();     //鏇存崲鍥剧墖楠岃瘉鐮�
+                        oSelf.checkImgCode();   //鍥剧墖楠岃瘉鐮侀獙璇�
+                    }
+                }
+            }
+        }
+    )
+};
+
+Login.prototype.getCaptcha = function (data) { //鑾峰彇鑵捐浜戦獙璇佺爜
+    var self = this;
+    $.ajax({
+        type: 'post',
+        url: window.location.origin + '/verifyCode/webCodeJsUrl.pub',
+        success: function (res) {
+            $('#captcha-wrap').show();
+            if (!document.getElementById('scriptE1')) {
+                var script = document.createElement("script");
+                script.type = "text/javascript";
+                script.src = res.jsUrl;
+                script.id = 'scriptE1';
+                document.getElementsByTagName("head")[0].appendChild(script);
+                script.onload = script.onreadystatechange = function () {
+                    self.beginMethod(data);
+                }
+            } else {
+                self.beginMethod(data);
+            }
+        }
+    })
+};
+Login.prototype.beginMethod = function (data) {
+    var self = this;
+    var capOption = {callback: cbfn, showHeader: true, type: "popup",};
+    capDestroy();
+    capInit(document.getElementById("TCaptcha"), capOption);
+    //鍥炶皟鍑芥暟锛氶獙璇佺爜椤甸潰鍏抽棴鏃跺洖璋�
+    function cbfn(retJson) {
+        $('#captcha-wrap').hide();
+        if (retJson.ret == 0) {
+            // 鐢ㄦ埛楠岃瘉鎴愬姛
+            data.verifyCode = retJson.ticket;
+            self.merchantLogin(data);
+        } else {
+            //鐢ㄦ埛鍏抽棴楠岃瘉鐮侀〉闈紝娌℃湁楠岃瘉
+            data.verifyCode.imgCode = false;
+        }
+    }
+};
+
+Login.prototype.addCaptchaDiv = function () { //娣诲姞婊戝姩楠岃瘉鐮佹帶浠�
+    if (!document.getElementById("captcha-wrap")) {
+        var divString = '<div id="captcha-wrap">' + '<div id="TCaptcha" style="width: 300px; height: 40px;"></div>' + '</div>';
+        $("body").append(divString);
+    }
+}
+
+Login.prototype.showLoginPage = function () {//鏄剧ず鐧诲綍寮圭獥
+    var oSelf = this;
+    if (location.href.search(/login.html/) != -1) {
+        oSelf.autoShowLogin();
+        $("body").css("overflow", "auto");
+    }
+};
+Login.prototype.autoShowLogin = function () {
+    var oSelf = this;
+    $('#login-wrap').show();
+    window.scrollTo(0, 0);  //婊氬姩鏉″綊闆�
+    oSelf.randomImgSrc();
+    this.userID = false;
+    this.password = false;
+    this.imgCode = false;
+    this.isDengTa = false;
+    this.isFill = true;
+    $('.login-content input').val('');
+    $('#showPassword').hide();
+    $('#password').show();
+    $('.userPassword .viewPassword').attr({
+        'data-pass': 'off',
+        'title': '鏌ョ湅瀵嗙爜'
+    }).css('background-image', 'url(' + oSelf.origin + '/images/hidePwd.png)');
+    $('.userID #userID').val('').css('background-color', 'none');
+    $('#password').val('').css('background-color', 'none');
+    $('.login-content .login-err').hide();
+    oSelf.checkIsRemember();
+    $("body").css("overflow", "hidden");
+    $('.left-nav').css('left', $('.main').css('margin-left'));
+}
+
+Login.prototype.randomImgSrc = function () {
+    var url = this.origin + '/verifyCode.pub';
+    var random = parseInt(Math.random() * 1000);
+    $('.imgCode img').attr('src', url + '?aid=' + random);
+    this.imgCode = false;
+
+}
+
+Login.prototype.cancalLogin = function () {
+    var oSelf = this;
+    $('#login-wrap .cancal,#login-wrap').unbind('click').click(function () {
+        $('#login-wrap').hide();
+        $('#userID').val('').removeClass('false').siblings('p').hide();
+        $('#password').val('').removeClass('false').siblings('p').hide();
+        $('#imgCode').val('').removeClass('false').siblings('p').hide();
+        oSelf.userID = false;
+        oSelf.password = false;
+        oSelf.imgCode = false;
+        oSelf.isFill = false;
+        $('body').css('overflow-y', 'auto');
+        $('.left-nav').css('left', $('.main').css('margin-left'));
+    })
+    $('#login-wrap .login').unbind('click').click(function (e) {
+        e.stopPropagation();
+    })
+}
+
+Login.prototype.viewPassword = function () {  //鏌ョ湅瀵嗙爜
+    var oSelf = this;
+    $('.userPassword .viewPassword').on('click', function () {
+        var passValue = $(this).attr('data-pass');
+        $('#password').toggle();
+        $('#showPassword').toggle();
+        if (passValue == 'on') {
+            $(this).attr({
+                'data-pass': 'off',
+                'title': '鏌ョ湅瀵嗙爜'
+            }).css('background-image', 'url(' + oSelf.origin + '/images/hidePwd.png)');
+            $('#password').focus();
+        } else if (passValue == 'off') {
+            $(this).attr({
+                'data-pass': 'on',
+                'title': '闅愯棌瀵嗙爜'
+            }).css('background-image', 'url(' + oSelf.origin + '/images/showPwd.png)');
+            $('#showPassword').focus();
+        }
+    })
+}
+
+Login.prototype.toForgetPassword = function () { //蹇樿瀵嗙爜
+    $('.forgetPassword').click(function () {
+        window.location.href = "/pages/findPassword/index.html";
+    })
+}
+
+Login.prototype.deliverPassword = function () {   //瀵嗙爜妗嗛棿鍊间紶閫掑悓姝�
+    $('#showPassword').on('focus keyup blur', function () {
+        $('#password').val($(this).val());
+    })
+    $('#password').on('focus keyup blur', function () {
+        $('#showPassword').val($(this).val());
+    })
+}
+
+Login.prototype.switchLoginMold = function () { //鐏鍜屼赴妗ヨ处鍙峰垏鎹�
+    var oSelf = this;
+    $('.login-type .dt').unbind('click').click(function () {
+        var tempStr1 = "鏁版嵁鐏璐︽埛鐧诲綍".tran();
+        $('.login .title').text(tempStr1);
+        var tempStr2 = "鏁版嵁鐏鐢ㄦ埛鍚嶆垨鎵嬫満鍙�".tran();
+        $('#userID').attr('placeholder', tempStr2);
+        var tempStr3 = "璇蜂娇鐢ㄦ暟鎹伅濉旇处鎴风櫥褰曪紝鎴栫偣鍑诲浘鐗囧垏鎹�".tran();
+        $('.login-content .sub-title span').text(tempStr3);
+        $(this).hide().siblings("li").show();
+        oSelf.isDengTa = true;
+    })
+    $('.login-type .qiao').unbind('click').click(function () {
+        var tempStr1 = "涓版ˉ璐﹀彿鐧诲綍".tran();
+        $('.login .title').text(tempStr1);
+        var tempStr2 = "鐢ㄦ埛鍚嶆垨鎵嬫満鍙�".tran();
+        $('#userID').attr('placeholder', tempStr2);
+        var tempStr3 = "璇蜂娇鐢ㄤ赴妗ヨ处鎴风櫥褰曪紝鎴栫偣鍑诲浘鐗囧垏鎹�".tran();
+        $('.login-content .sub-title span').text(tempStr3);
+        $(this).hide().siblings("li").show();
+        oSelf.isDengTa = false;
+    })
+}
+
+Login.prototype.checkIsRemember = function () {      //鍒ゆ柇鏄惁璁颁綇璐︽埛绫诲瀷
+    var oSelf = this;
+    if ($.cookie('csimRememberName') != undefined) {
+        var userInfo = JSON.parse($.cookie('csimRememberName'))
+        oSelf.userID = userInfo.rememberName;
+        oSelf.isDengTa = userInfo.isDengTa;
+        $('.userID #userID').val(oSelf.userID).removeClass('false').siblings('p').hide();
+        $('#password').focus();
+        if (oSelf.isDengTa) {
+            $('.login-type .dt').hide();
+            $('.login-type .qiao').show();
+            var tempStr1 = "鏁版嵁鐏璐︽埛鐧诲綍".tran();
+            $('.login .title').text(tempStr1);
+            var tempStr2 = "鏁版嵁鐏鐢ㄦ埛鍚嶆垨鎵嬫満鍙�".tran();
+            $('#userID').attr('placeholder', tempStr2);
+            var tempStr3 = "璇蜂娇鐢ㄦ暟鎹伅濉旇处鎴风櫥褰曪紝鎴栫偣鍑诲浘鐗囧垏鎹�".tran();
+            $('.login-content .sub-title span').text(tempStr3);
+        } else {
+            $('.login-type .dt').show();
+            $('.login-type .qiao').hide();
+            var tempStr1 = "涓版ˉ璐﹀彿鐧诲綍".tran();
+            $('.login .title').text(tempStr1);
+            var tempStr2 = "鐢ㄦ埛鍚嶆垨鎵嬫満鍙�".tran();
+            $('#userID').attr('placeholder', tempStr2);
+            var tempStr3 = "璇蜂娇鐢ㄤ赴妗ヨ处鎴风櫥褰曪紝鎴栫偣鍑诲浘鐗囧垏鎹�".tran();
+            $('.login-content .sub-title span').text(tempStr3);
+        }
+    } else {
+        $('.login-type .dt').show();
+        $('.login-type .qiao').hide();
+        var tempStr1 = "涓版ˉ璐﹀彿鐧诲綍".tran();
+        $('.login .title').text(tempStr1);
+        var tempStr2 = "鐢ㄦ埛鍚嶆垨鎵嬫満鍙�".tran();
+        $('#userID').attr('placeholder', tempStr2);
+        var tempStr3 = "璇蜂娇鐢ㄤ赴妗ヨ处鎴风櫥褰曪紝鎴栫偣鍑诲浘鐗囧垏鎹�".tran();
+        $('.login-content .sub-title span').text(tempStr3);
+        $('.userID #userID').focus();
+    }
+}
+
+Login.prototype.hideErrInfo = function (el) { //闅愯棌閿欒鎻愮ず
+    el.attr('class', '');
+    el.siblings('p').hide();
+}
+
+Login.prototype.judgeUserID = function () {
+
+    var oSelf = this;
+    $('.userID #userID').blur(function () {
+        var tempStr = $(this).val().trim();
+        if (tempStr.length != 0) {
+            var qiaoReg = /^[a-z0-9][a-z0-9@-_.]{5,19}$/i;	//涓版ˉ鐢ㄦ埛鍚嶆鍒�
+            var dengTaReg = /^([a-zA-z]*[0-9]*){2,15}$/;	//鐏鐢ㄦ埛鍚嶆鍒�
+            if (!qiaoReg.test(tempStr) && !dengTaReg.test(tempStr)) {
+                oSelf.userID = false;
+                $('.userID #userID').siblings('p').show().html('鐢ㄦ埛鍚嶆垨鎵嬫満鍙疯緭鍏ヤ笉鍚堟硶');
+            } else {
+                $('.userID #userID').siblings('p').hide();
+                oSelf.userID = tempStr;
+            }
+
+        } else {
+            oSelf.userID = false;
+            oSelf.hideErrInfo($('.userID #userID'));
+        }
+    })
+
+}
+
+Login.prototype.checkPassword = function () {
+    var oSelf = this;
+    $('#password,#showPassword').blur(function () {
+        var tempStr = $('#password').val().trim();
+        if (tempStr.length != 0) {
+            oSelf.password = tempStr;
+        } else {
+            oSelf.password = false;
+        }
+
+    })
+}
+
+Login.prototype.encrypt = function (word) {
+    var PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCqwfA7Pre0IkwdwnOR6cbgX9M5nAD4hd5n0iY0hEZE8K/IFi4lqHEm8ofJBWW+LFdtyHz3Lp8i77ZXRtN/qXP/b5tkQvgRmcXE3Zjfppm3kjzct+41fS3RMMSb8hrY5kidUH+ANBAjmZP1gpWW2Hy6Ns+OernenUilvoe4fsYTpQIDAQAB";
+    var encrypt = new JSEncrypt();
+    encrypt.setPublicKey(PUBLIC_KEY);
+    var encrypted = encrypt.encrypt(word) || '';
+    return encrypted.replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '');
+}
+
+Login.prototype.getImgCode = function () {
+    var oSelf = this;
+    $('.imgCode img').unbind('click').click(function () {
+        oSelf.randomImgSrc();
+        $('#imgCode').val('').removeAttr('disabled').focus();
+        $('.imgCode').find('p').show().html('鍥剧墖楠岃瘉鐮佸凡鏇存崲');
+    })
+}
+
+Login.prototype.checkImgCode = function () {
+    var oSelf = this;
+    $('#imgCode').blur(function () {
+        var str = $('.imgCode #imgCode').val().trim();
+        if (str.length != 4 && str.length != 0) {
+            $('.imgCode p').show().html('璇疯緭鍏�4浣嶅浘鐗囬獙璇佺爜');
+            oSelf.imgCode = false;
+        } else if (str.length == 0) {
+            $('.imgCode p').hide();
+            oSelf.imgCode = false;
+        } else {
+            $('.imgCode p').hide();
+            oSelf.imgCode = str;
+        }
+    })
+}
+
+Login.prototype.toLogin = function () {  //鐧诲綍
+    var oSelf = this;
+    $('.btn-group .toLogin').unbind('click').click(function () {
+        oSelf.submitUserInfo();
+    })
+    $("body").unbind('keydown').keydown(function (event) {
+        if (event.keyCode == 13 && oSelf.isFill) {
+            event.preventDefault();
+            $('input').blur();
+            if (!oSelf.userID) {
+                $('.userID #userID').focus();
+            } else if (!oSelf.password) {
+                $('.userPassword #password').focus();
+            } else if (oSelf.verifyType == 1) {
+                oSelf.submitUserInfo();
+            } else if (!oSelf.imgCode) {
+                $('.imgCode #imgCode').focus();
+            } else {
+                oSelf.submitUserInfo();
+            }
+            return false;
+        }
+    })
+}
+
+Login.prototype.submitUserInfo = function () {
+    var oSelf = this;
+    oSelf.getIP(function () {
+        if (!oSelf.userID) {
+            $('.userID #userID').focus();
+            $('.userID .reminder').show().html('鐢ㄦ埛鍚嶆垨鎵嬫満鍙疯緭鍏ヤ笉鍚堟硶');
+            $('.imgCode #imgCode').val('');
+            oSelf.randomImgSrc();
+        } else if (!oSelf.password) {
+            var passValue = $(this).attr('data-pass');
+            if (passValue == 'on') {
+                $('.userPassword #showPassword').focus();
+            } else if (passValue == 'off') {
+                $('.userPassword #password').focus();
+            }
+            $('.userPassword p').show().html('瀵嗙爜鏈緭鍏�');
+            $('.imgCode #imgCode').val('');
+            oSelf.randomImgSrc();
+        } else if (oSelf.verifyType == 1) {
+            $('.captcha-wrap').show();
+            $('.userID .reminder').hide();
+            $('.userPassword p').hide();
+            var passwordStr = oSelf.encrypt(oSelf.password);
+            var data = {
+                loginName: oSelf.userID,
+                loginPwd: passwordStr,
+                userIp: oSelf.userIp,
+                browser: oSelf.browser,
+                loginArea: oSelf.loginArea
+            };
+            oSelf.getCaptcha(data);
+        }
+        else if (oSelf.verifyType == 2 && !oSelf.imgCode) {
+            $('.imgCode #imgCode').focus();
+            $('.imgCode p').show().html('楠岃瘉鐮佹湭杈撳叆/杈撳叆閿欒');
+            $('.imgCode #imgCode').val('');
+            oSelf.randomImgSrc();
+        } else {
+            $('.userID .reminder').hide();
+            $('.userPassword p').hide();
+            var passwordStr = oSelf.encrypt(oSelf.password);
+            var data = {
+                loginName: oSelf.userID,
+                loginPwd: passwordStr,
+                verifyCode: oSelf.imgCode,
+                userIp: oSelf.userIp,
+                browser: oSelf.browser,
+                loginArea: oSelf.loginArea
+            };
+            oSelf.merchantLogin(data);
+        }
+    });
+
+}
+
+Login.prototype.merchantLogin = function (data) {  //鐧诲綍
+    var oSelf = this;
+    var reqUrl = location.origin + '/merchantLogin.pub';
+    var reqData = data;
+    oSelf.isDengTa ? reqData.loginMold = 4 : reqData.loginMold = 1;
+    $.ajax({
+        type: 'post',
+        url: reqUrl,
+        data: reqData,
+        dataType: 'json',
+        success: function (res) {
+            if (res.loginSucc) { //鐧诲綍鎴愬姛
+                oSelf.loginSuccess(res);
+            } else if (res.success) {            //鐧诲綍澶辫触
+                if (res.mappedErrorMsgs[0] == "verifyCode.error") {  //楠岃瘉鐮侀敊璇�
+                    oSelf.verifyCodeErr();
+                } else if (res.mappedErrorMsgs[0] == "Authorize.error.password" || res.mappedErrorMsgs[0] == "Authorize.not.exist.user") {    //璐﹀彿瀵嗙爜閿欒
+                    oSelf.userInfoErr();
+                } else if (res.mappedErrorMsgs[0] == "Authorize.invalid.user") {       //璐︽埛鍐荤粨澶辨晥
+                    oSelf.blockingUser();
+                } else if (res.mappedErrorMsgs[0] == "Authorize.domain.connFailed") {	//璇锋眰鐏澶辫触
+                    $('.login-content .login-err').show().html('鐧诲綍楠岃瘉澶辫触,璇风‘璁ょ敤鎴风被鍨�');
+                    $('.imgCode #imgCode').val('');
+                    oSelf.randomImgSrc();
+                } else if (res.mappedErrorMsgs[0] == "Authorize.domain.exception") {
+                    $('.login-content .login-err').show().html('璇锋眰寮傚父,鐧诲綍澶辫触');
+                    $('.imgCode #imgCode').val('');
+                    oSelf.randomImgSrc();
+                } else if (res.mappedErrorMsgs[0] == "verifyCode.timeout") {    //楠岃瘉鐮佽秴鏃�
+                    oSelf.timeout();
+                } else {
+                    $('.login-content .login-err').show().html('鍑虹幇鏈煡閿欒,鐧诲綍澶辫触');
+                    $('.imgCode #imgCode').val('');
+                    oSelf.randomImgSrc();
+                }
+            } else {
+                $('.login-content .login-err').show().html('鏃犳硶鐧诲綍锛岃绋嶅悗鍐嶈瘯');
+                $('.imgCode #imgCode').val('');
+                oSelf.randomImgSrc();
+            }
+        }
+    })
+}
+
+Login.prototype.loginSuccess = function (res) {  //鐧诲綍鎴愬姛
+    var oSelf = this;
+    $('.header .header-right').hide();
+    $('.header .user-center').show().find('a').html(res.username);
+    $('.login-content .login-err').hide();
+    $('#login-wrap').hide();  // 鍏抽棴寮圭獥
+    oSelf.isFill = false;
+    $('body').css('overflow-y', 'auto');
+    $('.left-nav').css('left', $('.main').css('margin-left'));
+    //璁颁綇璐﹀彿
+    var csimRememberName = {
+        rememberName: oSelf.userID,
+        isDengTa: oSelf.isDengTa
+    }
+    $.cookie('csimRememberName', JSON.stringify(csimRememberName), {expires: 36500, path: '/'});
+    //璺宠浆
+    if (location.href.search(/login.html/) == -1) {
+        oSelf.returnUrl != null ? window.open(oSelf.returnUrl) : window.location.reload();
+    } else if (document.referrer && document.referrer.search(/register|findPassword|login/) == -1) {
+        window.location.replace(document.referrer);
+    } else {
+        window.location.replace(location.origin);
+    }
+}
+
+Login.prototype.userInfoErr = function () {	//璐﹀彿瀵嗙爜閿欒
+    var oSelf = this;
+    $('.userPassword #password').val('');
+    $('.userPassword #showPassword').val('');
+    oSelf.password = false;
+    $('.login-content .login-err').hide();
+    $('.userID #userID').focus();
+    oSelf.userID = false;
+    $('.userID p').show().html('璐﹀彿鎴栧瘑鐮侀敊璇紝璇烽噸鏂拌緭鍏�');
+    $('#imgCode').val('');
+    oSelf.randomImgSrc();
+}
+
+Login.prototype.verifyCodeErr = function () {  //楠岃瘉鐮侀敊璇�
+    var oSelf = this;
+    $('#imgCode').val('').focus();
+    oSelf.randomImgSrc();
+    $('.login-content .login-err').hide();
+    $('.imgCode p').show().html('鍥剧墖楠岃瘉鐮侀敊璇紝璇烽噸鏂拌緭鍏�');
+};
+
+Login.prototype.blockingUser = function () {	//璐﹀彿鍐荤粨涓嶅彲鐢�
+    var oSelf = this;
+    $('.userPassword #password').val('');
+    $('.userPassword #showPassword').val('');
+    oSelf.password = false;
+    $('.login-content .login-err').show().html('璇ヨ处鍙峰凡鍐荤粨');
+    $('.userID #userID').focus().val('');
+    oSelf.userID = false;
+    $('#imgCode').val('');
+    oSelf.randomImgSrc();
+}
+
+Login.prototype.timeout = function () {	//楠岃瘉鐮佽秴鏃�
+    var oSelf = this;
+    $('.imgCode #imgCode').focus().val('');
+    oSelf.randomImgSrc();
+    $('.login-content .login-err').hide();
+    $('.imgCode p').show().html('鍥剧墖楠岃瘉鐮佽秴鏃讹紝璇烽噸鏂拌緭鍏�');
+}
+
+Login.prototype.getBrowser = function () {
+    var userBrowser = "";
+    var userAgent = navigator.userAgent.toLowerCase(); //鍙栧緱娴忚鍣ㄧ殑userAgent瀛楃涓�
+    var regStr_ie = /trident\/[\d.]+;/gi;
+    var regStr_ff = /firefox\/[\d.]+/gi;
+    var regStr_chrome = /chrome\/[\d.]+/gi;
+    var regStr_saf = /safari\/[\d.]+/gi;
+    var regStr_opr = /opr\/[\d.]+/gi;
+    var regStr_qq = /qqbrowser\/[\d.]+/gi;
+    var regStr_metasr = /metasr [\d.]+/gi;
+    var regStr_ubrowser = /ubrowser\/[\d.]+/gi;
+    if (userAgent.indexOf("trident") > 0) {
+        var version = '';
+        if (userAgent.indexOf("msie") > 0) {
+            version = userAgent.match(/msie [\d.]+;/gi)[0].replace('msie ', '');
+        } else {
+            version = "11.0";
+        }
+        userBrowser = "IE娴忚鍣�/" + version;//IE
+    } else if (userAgent.indexOf("qqbrowser") > 0) {
+        userBrowser = userAgent.match(regStr_qq)[0].replace("qqbrowser", "QQ娴忚鍣�");//QQ
+    } else if (userAgent.indexOf("opr") > 0) {
+        userBrowser = userAgent.match(regStr_opr)[0].replace("opr", "娆ф湅娴忚鍣�");//娆ф湅
+    } else if (userAgent.indexOf("metasr") > 0) {
+        userBrowser = userAgent.match(regStr_metasr)[0].replace("metasr", "鎼滅嫍娴忚鍣�");//鎼滅嫍
+    } else if (userAgent.indexOf("ubrowser") > 0) {
+        userBrowser = userAgent.match(regStr_ubrowser)[0].replace("ubrowser", "UC娴忚鍣�");//鎼滅嫍
+    } else if (userAgent.indexOf("firefox") > 0) {
+        userBrowser = userAgent.match(regStr_ff)[0].replace("firefox", "鐏嫄娴忚鍣�");//firefox
+    } else if (userAgent.indexOf("safari") > 0 && userAgent.indexOf("chrome") < 0) {
+        userBrowser = userAgent.match(regStr_saf)[0].replace("safari", "鑻规灉娴忚鍣�");//Safari
+    } else if (userAgent.indexOf("chrome") > 0) {
+        userBrowser = userAgent.match(regStr_chrome)[0].replace("chrome", "璋锋瓕娴忚鍣�");//chrome
+    } else {
+        userBrowser = "鏈煡娴忚鍣�";
+    }
+    this.browser = userBrowser;
+}
+
+//鑾峰彇鐢ㄦ埛鐪熷疄Ip
+Login.prototype.getIP = function (callback) {
+    var oSelf = this;
+    if (oSelf.userIp.length == 0) {
+        var data = {
+            key: "PJSBZ-3VYRU-NTDVZ-4AVLB-K6U76-3ZBTI"
+        }
+        var url = "https://apis.map.qq.com/ws/location/v1/ip";
+        data.output = "jsonp";
+        $.ajax({
+            type: "get",
+            dataType: 'jsonp',
+            data: data,
+            jsonp: "callback",
+            jsonpCallback: "QQmap",
+            url: url,
+            success: function (res) {
+                if (res.status == 0) {
+                    oSelf.userIp = res.result.ip;
+                    var province = res.result.ad_info.province || '';
+                    var city = res.result.ad_info.city || '';
+                    var district = res.result.ad_info.district || '';
+                    oSelf.loginArea = province + city + district;
+                }
+                if (callback) {
+                    callback();
+                }
+            },
+            error: function (err) {
+                if (callback) {
+                    callback();
+                }
+            }
+        });
+    } else {
+        if (callback) {
+            callback();
+        }
+    }
+
+}
+
