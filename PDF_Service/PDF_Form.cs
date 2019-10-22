@@ -371,7 +371,7 @@ namespace PDF_Service
                 }
                 else
                 {
-                    endIndex = dataArr.LastIndexOf("Sold-to address 售达方地址") - 1;
+                    endIndex = dataArr.IndexOf("Sold-to address 售达方地址") - 1;
                 }
                 #endregion
                 //明细的行数
@@ -453,7 +453,7 @@ namespace PDF_Service
                 }
                 else
                 {
-                    endIndex = dataArr.LastIndexOf("Sold-to address 售达方地址");
+                    endIndex = dataArr.IndexOf("Sold-to address 售达方地址");
                 }
                 #endregion
                 //明细的行数
@@ -477,8 +477,8 @@ namespace PDF_Service
                         string threeRow = dataArr[index + 2];
                         #region 多行物料描述操作
                         string fourRow = dataArr[index + 3];
-                        if ((fourRow.Split(' ').Length < 10 
-                            || fourRow.Split(' ')[0].Length != 6) 
+                        if ((fourRow.Split(' ').Length < 10
+                            || fourRow.Split(' ')[0].Length != 6)
                             && (index + 4) < endIndex)
                         {
                             threeRow += " " + fourRow;
@@ -506,39 +506,44 @@ namespace PDF_Service
             }
             #endregion
             #region Shipment details 发货批次详述
+            //获取发货批次详述开始索引
             int index_shipment = dataArr.IndexOf("Shipment details 发货批次详述");
             if (index_shipment < 0)
             {
                 index_shipment = dataArr.IndexOf("Shipment details");
+                if (index_shipment < 0)
+                {
+                    index_shipment = dataArr.LastIndexOf("______________________________________________________________________________");
+                }
             }
-            if (index_shipment > -1)
+            if (index_shipment > 0)
             {
-                string ShippingCond = dataArr[index_shipment + 1];
-                if (ShippingCond.Contains("Shipping conditions"))
-                    data.Add("ShippingCond", ShippingCond.Split(':')[1].Trim());
-                string TermsOfDelivery = dataArr[index_shipment + 2];
-                if (TermsOfDelivery.Contains("Terms of delivery"))
-                    data.Add("TermsOfDelivery", TermsOfDelivery.Split(':')[1].Trim());
-                string Gross = dataArr[index_shipment + 3];
-                if (Gross.Contains("Gross weight"))
+                //循环判断是否存在，并赋值。
+                for (int i = 1; i <= 5; i++)
                 {
-                    string[] GrossWeight = RemoveStrSpace(Gross).Split(' ');
-                    data.Add("GrossWeight", GrossWeight[GrossWeight.Length - 2]);
-                    data.Add("GrossWeightUint", GrossWeight[GrossWeight.Length - 1]);
-                }
-                string Net = dataArr[index_shipment + 4];
-                if (Net.Contains("Net weight"))
-                {
-                    string[] NetWeight = RemoveStrSpace(Net).Split(' ');
-                    data.Add("NetWeight", NetWeight[NetWeight.Length - 2]);
-                    data.Add("NetWeightUint", NetWeight[NetWeight.Length - 1]);
-                }
-                string Vol = dataArr[index_shipment + 5];
-                if (Vol.Contains("Volumes"))
-                {
-                    string[] Volumes = RemoveStrSpace(Vol).Split(' ');
-                    data.Add("Volumes", Volumes[Volumes.Length - 2]);
-                    data.Add("VolumesUint", Volumes[Volumes.Length - 1]);
+                    string DataStr = dataArr[index_shipment + i];
+                    if (DataStr.Contains("Shipping conditions"))
+                        data.Add("ShippingCond", DataStr.Split(':')[1].Trim());
+                    if (DataStr.Contains("Terms of delivery"))
+                        data.Add("TermsOfDelivery", DataStr.Split(':')[1].Trim());
+                    if (DataStr.Contains("Gross weight"))
+                    {
+                        string[] GrossWeight = RemoveStrSpace(DataStr).Split(' ');
+                        data.Add("GrossWeight", GrossWeight[GrossWeight.Length - 2]);
+                        data.Add("GrossWeightUint", GrossWeight[GrossWeight.Length - 1]);
+                    }
+                    if (DataStr.Contains("Net weight"))
+                    {
+                        string[] NetWeight = RemoveStrSpace(DataStr).Split(' ');
+                        data.Add("NetWeight", NetWeight[NetWeight.Length - 2]);
+                        data.Add("NetWeightUint", NetWeight[NetWeight.Length - 1]);
+                    }
+                    if (DataStr.Contains("Volumes"))
+                    {
+                        string[] Volumes = RemoveStrSpace(DataStr).Split(' ');
+                        data.Add("Volumes", Volumes[Volumes.Length - 2]);
+                        data.Add("VolumesUint", Volumes[Volumes.Length - 1]);
+                    }
                 }
             }
             #endregion
