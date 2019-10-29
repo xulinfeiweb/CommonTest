@@ -41,6 +41,7 @@
             this.txt_pdf_path = new System.Windows.Forms.TextBox();
             this.btn_pdf = new System.Windows.Forms.Button();
             this.btn_adc = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // openFileDialog
@@ -59,14 +60,14 @@
             // 
             // txtID
             // 
-            this.txtID.Location = new System.Drawing.Point(156, 94);
+            this.txtID.Location = new System.Drawing.Point(162, 128);
             this.txtID.Name = "txtID";
             this.txtID.Size = new System.Drawing.Size(311, 21);
             this.txtID.TabIndex = 10;
             // 
             // btn_id
             // 
-            this.btn_id.Location = new System.Drawing.Point(55, 92);
+            this.btn_id.Location = new System.Drawing.Point(61, 126);
             this.btn_id.Name = "btn_id";
             this.btn_id.Size = new System.Drawing.Size(75, 23);
             this.btn_id.TabIndex = 9;
@@ -117,7 +118,7 @@
             // 
             // btn_query
             // 
-            this.btn_query.Location = new System.Drawing.Point(88, 149);
+            this.btn_query.Location = new System.Drawing.Point(183, 166);
             this.btn_query.Name = "btn_query";
             this.btn_query.Size = new System.Drawing.Size(109, 23);
             this.btn_query.TabIndex = 18;
@@ -144,7 +145,7 @@
             // 
             // btn_adc
             // 
-            this.btn_adc.Location = new System.Drawing.Point(254, 149);
+            this.btn_adc.Location = new System.Drawing.Point(364, 76);
             this.btn_adc.Name = "btn_adc";
             this.btn_adc.Size = new System.Drawing.Size(109, 23);
             this.btn_adc.TabIndex = 21;
@@ -152,11 +153,19 @@
             this.btn_adc.UseVisualStyleBackColor = true;
             this.btn_adc.Click += new System.EventHandler(this.btn_adc_Click);
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(66, 74);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(226, 21);
+            this.textBox1.TabIndex = 22;
+            // 
             // PDF_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1041, 730);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.btn_adc);
             this.Controls.Add(this.txt_pdf_path);
             this.Controls.Add(this.btn_pdf);
@@ -191,6 +200,7 @@
         private System.Windows.Forms.TextBox txt_pdf_path;
         private System.Windows.Forms.Button btn_pdf;
         private System.Windows.Forms.Button btn_adc;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

@@ -1,0 +1,201 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+  <soap:Header>
+    <MessageHeader xmlns='http://www.ebxml.org/namespaces/messageHeader'></MessageHeader>
+  </soap:Header>
+  <soap:Body>
+    <SessionCloseRQ xmlns='http://www.opentravel.org/OTA/2002/11'>
+      <POS>
+        <Source PseudoCityCode='U2JF' />
+      </POS>
+    </SessionCloseRQ>
+  </soap:Body>
+</soap:Envelope>
+
+
+<!--<Request service = 'QuerySFWaybillService' lang = 'zh-CN'>
+  <Head>BSPdevelop,j8DzkIFgmlomPt0aLuwU</Head>
+  <Body>
+    <Waybill type = '2' waybillNo = 'SF2000086363720' orderId = '' phone='18959628809' />
+  </Body>
+</Request>
+
+
+<Request service='OrderService' lang='zh-CN'>
+  <Head>SLKJ2019,FBIqMkZjzxbsZgo7jTpeq7PD8CVzLT4Q</Head>
+  <Body>
+    <Order
+              orderid='QIAO-20180524001'
+                  express_type='2'
+                    j_province='广东省'
+                    j_city='深圳市'
+                    j_company='顺丰镖局'
+                    j_contact='丰哥'
+                    j_tel='15012345678'
+                    j_address='福田区新洲十一街万基商务大厦26楼'
+                    d_province='广东省'
+           d_city='广州市'
+           d_county=''
+           d_company='神罗科技'
+           d_contact='风一样的旭哥'
+           d_tel='33992159'
+           d_address='海珠区宝芝林大厦701室'
+                    parcel_quantity='1'
+                    pay_method='3'
+                    custid ='7551234567'
+                    customs_batchs=''
+                      is_unified_waybill_no='1' >
+      <AddedService name='COD' value='1.01' value1='7551234567'/>
+    </Order>
+  </Body>
+</Request>
+
+
+
+
+
+<Request service = 'OrderService' lang = 'zh-CN' >
+  <Head>ZTGJWL</Head>
+  <Body>
+    <Order
+    orderid='SFKD-20160219000019'
+    j_company='深圳宝龙达信息技术股份有限公司'
+    j_contact='邓丽君'
+    j_tel='15323233432'
+    j_mobile='15322234342'
+    j_province='广东省'
+    j_city='深圳市'
+    j_county='南山区'
+    j_address='广东省深圳市南山区西丽镇塘朗同富裕工业城7栋'
+    d_contact='四海' d_tel='15023434543'
+    d_mobile='15423456545'
+    d_province='广东省'
+    d_city='深圳市'
+    d_county='南山区'
+    d_address='科技园软件产业基地'
+    express_type='1'
+    pay_method='1'
+    custid='7551234567'
+    parcel_quantity='1'
+    is_docall='0'
+    sendstarttime=''
+    remark='电子产品 笔记本+显卡'
+          is_unified_waybill_no='1'>
+    </Order>
+  </Body>
+</Request>
+
+
+
+
+
+<Request service='RouteService' lang='zh-CN'>
+  <Head>ZTGJWL,FBIqMkZjzxbsZgo7jTpeq7PD8CVzLT4Q</Head>
+  <Body>
+    <RouteRequest tracking_type='1' method_type='1' tracking_number='444003077898'/>
+  </Body>
+</Request>
+
+
+
+<?xml version='1.0' encoding='UTF-8'?>
+<Response service='QuerySFWaybillService' lang='zh_CN'>
+  <Head>OK</Head>
+  <Body>
+    <Waybill orderId='QIAO-20180524002'
+             waybillNo='SF1011470276085'
+             meterageWeightQty='1.0' 
+             customerAcctCode='9999999999'
+             limitTypeCode='T6' 
+             consignedTm='2019-10-11 11:30:24'
+             realWeightQty='1.0' 
+             productName='顺丰特惠' 
+             expressTypeCode='B1' 
+             addresseeAddr='广东省广州市海珠区海珠区宝芝林大厦701室'
+             addresseePhone='33992159' 
+             addresseeContName='风一样的旭哥' 
+             dProvince='广东省' 
+             dCity='广州市' 
+             consignorAddr='福田区新洲十一街万基商务大厦26楼' 
+             consignorPhone='15012345678' 
+             consignorMobile='15012345678' 
+             consignorContName='丰哥' 
+             jProvince='广东省' 
+             jCity='深圳市' 
+             consignorCompName='顺丰镖局' 
+             addresseeCompName='神罗科技'>
+      <Fee type='1' name='主运费' value='9.0' paymentTypeCode='3' settlementTypeCode='2' customerAcctCode='9999999999'/>
+    </Waybill>
+  </Body>
+</Response>
+
+
+
+
+
+
+
+
+
+<Request service = 'OrderService' lang = 'zh-CN' >
+  <Head>ZTGJWL</Head>
+  <Body>
+    <Order
+    orderid='SFKD-20160219000054'
+    j_company='深圳宝龙达信息技术股份有限公司'
+    j_contact='邓丽君'
+    j_tel='15323233432'
+    j_mobile='15322234342'
+    j_province='广东省'
+    j_city='深圳市'
+    j_county='南山区'
+    j_address='广东省深圳市南山区西丽镇塘朗同富裕工业城7栋'
+    d_contact='四海' d_tel='15023434543'
+    d_mobile='15423456545'
+    d_province='广东省'
+    d_city='深圳市'
+    d_county='南山区'
+    d_address='科技园软件产业基地'
+    express_type='1'
+    pay_method='1'
+    custid='7551234567'
+    parcel_quantity='1'
+    is_docall='0'
+    sendstarttime=''
+    remark='电子产品 笔记本+显卡'
+          is_unified_waybill_no='1'>
+    </Order>
+  </Body>
+</Request>
+
+
+
+
+<Request service='OrderService' lang='zh-CN'>
+  <Head>SLKJ2019,FBIqMkZjzxbsZgo7jTpeq7PD8CVzLT4Q</Head>
+  <Body>
+    <Order
+              orderid='QIAO-20180524001'
+                  express_type='2'
+                    j_province='广东省'
+                    j_city='深圳市'
+                    j_company='顺丰镖局'
+                    j_contact='丰哥'
+                    j_tel='15012345678'
+                    j_address='福田区新洲十一街万基商务大厦26楼'
+                    d_province='广东省'
+           d_city='广州市'
+           d_county=''
+           d_company='神罗科技'
+           d_contact='风一样的旭哥'
+           d_tel='33992159'
+           d_address='海珠区宝芝林大厦701室'
+                    parcel_quantity='1'
+                    pay_method='3'
+                    custid ='7551234567'
+                    customs_batchs=''
+                      is_unified_waybill_no='1' >
+      <AddedService name='COD' value='1.01' value1='7551234567'/>
+    </Order>
+  </Body>
+</Request>-->

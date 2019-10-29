@@ -6,6 +6,7 @@ using PdfHelper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -19,14 +20,6 @@ namespace PDF_Service
 {
     public partial class PDF_Form : Form
     {
-        /// <summary>
-        /// 只支持pdf文件
-        /// </summary>
-        private const string PDF_FileType = "PDF文件|*.pdf";
-        /// <summary>
-        /// 图片类型
-        /// </summary>
-        private const string Img_FileType = "Image文件|*.jpg;*.png;*.bmp;*.gif";
         public PDF_Form()
         {
             InitializeComponent();
@@ -113,17 +106,17 @@ namespace PDF_Service
         }
         private void btn_id_Click(object sender, EventArgs e)
         {
-            string file = GetPath(PDF_FileType);
+            string file = GetPath(GetValue("PDF_FileType"));
             this.txtID.Text = file;
         }
         private void btn_img_Click(object sender, EventArgs e)
         {
-            string file = GetPath(Img_FileType);
+            string file = GetPath(GetValue("Img_FileType"));
             this.txt_img_path.Text = file;
         }
         private void btn_pdf_Click(object sender, EventArgs e)
         {
-            string file = GetPath(PDF_FileType);
+            string file = GetPath(GetValue("PDF_FileType"));
             txt_pdf_path.Text = file;
         }
         private void btn_query_Click(object sender, EventArgs e)
@@ -142,11 +135,16 @@ namespace PDF_Service
                     string jsonData = string.Empty;
                     Dictionary<string, string> data = new Dictionary<string, string>();
                     List<Dictionary<string, string>> list = new List<Dictionary<string, string>>();
+                    int currPage = 1;//PDF当前页，默认为第一页
                     for (int i = 1; i <= Pdf_Pages; i++)
                     {
                         ITextExtractionStrategy strategy = parser.ProcessContent<SimpleTextExtractionStrategy>(i, new SimpleTextExtractionStrategy());
                         string contentOfPage = strategy.GetResultantText();
-                        GetPDFText(contentOfPage, data, list);
+                        if (currPage != 1 && currPage != Pdf_Pages)
+                            GetPDFText(contentOfPage, data, list, currPage);
+                        else
+                            GetPDFText(contentOfPage, data, list);
+                        currPage++;
                     }
                     Dictionary<string, object> Obj = new Dictionary<string, object>();
                     Obj.Add("Head", data);
@@ -159,14 +157,21 @@ namespace PDF_Service
                 }
             }
         }
-        public void GetPDFText(string Text, Dictionary<string, string> data, List<Dictionary<string, string>> list)
+        public void GetPDFText(string Text,
+            Dictionary<string, string> data,
+            List<Dictionary<string, string>> list,
+            int currPage = 0)
         {
+            string PDF_Line = GetValue("PDF_Detail_Line");
             List<string> dataArr = Text.Split('\n').ToList();
+            int line = dataArr.IndexOf(PDF_Line);
+            if (line < 0)
+                PDF_Line = GetValue("PDF_Detail_Line2");
             #region Number/date 单号/日期
-            int index_number = dataArr.IndexOf("Number/date 单号/日期");
+            int index_number = dataArr.IndexOf(GetValue("Number_date"));
             if (index_number < 0)
             {
-                index_number = dataArr.IndexOf("Number/date");
+                index_number = dataArr.IndexOf(GetValue("Number_date2"));
             }
             string ShipCode = "";
             if (index_number > -1)
@@ -179,10 +184,10 @@ namespace PDF_Service
             #endregion
             #region Ship-to address 收货方地址
             //收货方地址中字段数量不明确
-            int index_shop = dataArr.IndexOf("Ship-to address 收货方地址");
+            int index_shop = dataArr.IndexOf(GetValue("Ship_to_address"));
             if (index_shop < 0)
             {
-                index_shop = dataArr.IndexOf("Ship-to address ");
+                index_shop = dataArr.IndexOf(GetValue("Ship_to_address2"));
             }
             if (index_shop > -1)
             {
@@ -213,7 +218,7 @@ namespace PDF_Service
             }
             #endregion
             #region Contact person/E-mail 联系人/电子邮件
-            int index_contact = dataArr.IndexOf("Contact person/E-mail 联系人/电子邮件");
+            int index_contact = dataArr.IndexOf(GetValue("Contact_person"));
             if (index_contact > -1)
             {
                 data.Add("ContactName", dataArr[index_contact + 1]);
@@ -221,12 +226,12 @@ namespace PDF_Service
                 data.Add("ContactNameTel", dataArr[index_contact + 3].Split(':')[1].TrimStart());
                 data.Add("Email", dataArr[index_contact + 4].Split(':')[1].Trim());
             }
-            int index_contact2 = dataArr.IndexOf("Contact person/E-mail");
+            int index_contact2 = dataArr.IndexOf(GetValue("Contact_person2"));
             if (index_contact2 > -1)
             {
                 data.Add("ContactName", dataArr[index_contact2 + 1]);
                 data.Add("ContactNameEmail", dataArr[index_contact2 + 2]);
-                int order_index = dataArr.IndexOf("Your Order no./date");
+                int order_index = dataArr.IndexOf(GetValue("Order_no_date2"));
                 //Tel: / Fax:
                 string str = dataArr[index_contact2 + 3];
                 string[] arr = str.Split('/');
@@ -242,10 +247,10 @@ namespace PDF_Service
             }
             #endregion
             #region Your Order no./date 贵司订单号码/日期
-            int index_order = dataArr.IndexOf("Your Order no./date 贵司订单号码/日期");
+            int index_order = dataArr.IndexOf(GetValue("Order_no_date"));
             if (index_order < 0)
             {
-                index_order = dataArr.IndexOf("Your Order no./date");
+                index_order = dataArr.IndexOf(GetValue("Order_no_date2"));
             }
             if (index_order > -1)
             {
@@ -255,10 +260,10 @@ namespace PDF_Service
             }
             #endregion
             #region Our ref/date 我司参考号码/日期
-            int index_ourref = dataArr.IndexOf("Our ref/date 我司参考号码/日期");
+            int index_ourref = dataArr.IndexOf(GetValue("Our_ref"));
             if (index_ourref < 0)
             {
-                index_ourref = dataArr.IndexOf("Our ref/date");
+                index_ourref = dataArr.IndexOf(GetValue("Our_ref2"));
             }
             if (index_ourref > -1)
             {
@@ -268,11 +273,11 @@ namespace PDF_Service
             }
             #endregion
             #region  PDF地址信息 Address
-            int curr_index = dataArr.IndexOf("______________________________________________________________________________");
+            int curr_index = dataArr.IndexOf(PDF_Line);
             int index_add = curr_index - 1;
             if (index_add >= 0)
             {
-                //当数组len<6时，取上一个索引值
+                //当数组len<6时，取上一个索引值。英文逗号分隔
                 while (dataArr[index_add].Split(',').Length < 6 && index_add > 0)
                 {
                     index_add--;
@@ -322,34 +327,54 @@ namespace PDF_Service
                             strAddr += dataArr[index];
                     }
                     string[] arrAddr = strAddr.Split(',');
-                    if (arrAddr.Length == 6)
+                    if (arrAddr.Length >= 6)
                     {
                         data.Add("ReceiptName", arrAddr[0]);
                         data.Add("ReceiptAddress", arrAddr[1]);
                         data.Add("ReceiptZipCode", arrAddr[2]);
                         data.Add("ReceiptPeople", arrAddr[3].Trim());
                         data.Add("ReceiptTel", arrAddr[4]);
-                        data.Add("ReceiptMobile", arrAddr[5]);
-                    }
-                    else if (arrAddr.Length == 5)
-                    {
-                        data.Add("ReceiptAddress", arrAddr[0]);
-                        data.Add("ReceiptZipCode", arrAddr[1]);
-                        data.Add("ReceiptPeople", arrAddr[2]);
-                        data.Add("ReceiptTel", arrAddr[3].Trim());
-                        data.Add("ReceiptMobile", arrAddr[4]);
+                        string mobile = GetNumberOfStr(arrAddr[5]);
+                        data.Add("ReceiptMobile", mobile);
                     }
                     else
                     {
-                        string remark = "";
-                        for (int i = 0; i < curr_index; i++)
+                        #region 中文逗号分隔
+                        int ch_index = 0;
+                        //当数组len<6时，取上一个索引值
+                        string chstr = dataArr[ch_index];
+                        if (chstr.Contains("PARTIAL DELIVERY"))
+                            chstr = "";
+                        while (dataArr[ch_index].Split('，').Length < 6 && ch_index < (curr_index - 1))
                         {
-                            if (!dataArr[i].Contains("部分发货") && !dataArr[i].Contains("PARTIAL DELIVERY"))
-                            {
-                                remark += dataArr[i];
-                            }
+                            ch_index++;
+                            if (!dataArr[ch_index].Contains("部分发货") && !dataArr[ch_index].Contains("PARTIAL DELIVERY"))
+                                chstr += dataArr[ch_index];
                         }
-                        data.Add("ReceiptRemark", remark);
+                        string[] chAddr = chstr.Split('，');
+                        if (chAddr.Length >= 6)
+                        {
+                            data.Add("ReceiptName", chAddr[0]);
+                            data.Add("ReceiptAddress", chAddr[1]);
+                            data.Add("ReceiptZipCode", chAddr[2]);
+                            data.Add("ReceiptPeople", chAddr[3].Trim());
+                            data.Add("ReceiptTel", chAddr[4]);
+                            string mobile = GetNumberOfStr(chAddr[5]);
+                            data.Add("ReceiptMobile", mobile);
+                        }
+                        else
+                        {
+                            string remark = "";
+                            for (int i = 0; i < curr_index; i++)
+                            {
+                                if (!dataArr[i].Contains("部分发货") && !dataArr[i].Contains("PARTIAL DELIVERY"))
+                                {
+                                    remark += dataArr[i];
+                                }
+                            }
+                            data.Add("ReceiptRemark", remark);
+                        }
+                        #endregion
                     }
                     #endregion
                 }
@@ -361,80 +386,33 @@ namespace PDF_Service
             {
                 //明细开始索引
                 int begIndex = check_CH + 2;
-                //明细结束索引
-                int check_index = dataArr.IndexOf("Shipment details 发货批次详述");
-                #region 数据分页，索引获取
+                #region MyRegion
                 int endIndex = 0;
-                if (check_index > 0)
+                //集合中相同名称的元素个数
+                int Count = dataArr.Where(p => p.Contains(PDF_Line)).Count();
+                if (Count < 3)
                 {
-                    endIndex = dataArr.LastIndexOf("______________________________________________________________________________") - 1;
+                    //明细结束索引
+                    endIndex = dataArr.IndexOf(GetValue("Sold_to_address"));
+                    if (endIndex < 0)
+                    {
+                        //只有是中间页时，才会需要当前索引
+                        if (currPage > 0)
+                            //明细结束索引
+                            endIndex = dataArr.IndexOf(GetValue("EndIndex"));
+                    }
                 }
                 else
                 {
-                    endIndex = dataArr.IndexOf("Sold-to address 售达方地址") - 1;
+                    endIndex = dataArr.LastIndexOf(PDF_Line);
+                    if (Count == 4)
+                        endIndex--;
                 }
                 #endregion
                 //明细的行数
                 int contentRow = (endIndex - begIndex) / 4;
                 if (contentRow > 0)
-                {
-                    #region 获取明细
-                    //明细当前行索引
-                    for (int i = 0; i < contentRow; i++)
-                    {
-                        int index = (begIndex + (i * 4));
-                        Dictionary<string, string> detail = new Dictionary<string, string>();
-                        while (dataArr[index].Split(' ').Length < 10 ||
-                            dataArr[index].Split(' ').Length > 15 ||
-                            dataArr[index].Split(' ')[0].Length != 6)
-                        {
-                            index++;
-                        }
-                        string firstRow = RemoveStrSpace(dataArr[index]);
-                        string[] firstArr = firstRow.Replace("\\s+", " ").Split(' ');
-                        string towRow = dataArr[index + 1];
-                        string threeRow = dataArr[index + 2];
-                        string fourRow = dataArr[index + 3];
-                        #region 多行物料描述操作
-                        string fiveRow = dataArr[index + 4];
-                        string[] fiveRowArr = fiveRow.Split(' ');
-                        if ((fiveRowArr.Length < 10
-                            || fiveRowArr[0].Length != 6
-                            || fiveRowArr.Length > 15)
-                            && (index + 4) < endIndex)
-                        {
-                            fourRow += " " + fiveRow;
-                        }
-                        string sixRow = dataArr[index + 5];
-                        string[] sixRowArr = sixRow.Split(' ');
-                        if ((sixRowArr.Length < 10
-                            || sixRowArr[0].Length != 6
-                            || sixRowArr.Length > 15)
-                            && (index + 5) < endIndex)
-                        {
-                            fourRow += " " + sixRow;
-                        }
-                        #endregion
-                        detail.Add("ProjectRow", firstArr[0]);
-                        detail.Add("MaterialCode", firstArr[1]);
-                        string strNum = firstArr[2];
-                        if (firstArr.Length > 3)
-                        {
-                            strNum = firstArr[firstArr.Length - 1];
-                        }
-                        string num1 = GetNumberOfStr(strNum);
-                        string unit = strNum.Replace(num1, "");
-                        string[] towarr = towRow.Split('/');
-                        detail.Add("Number", num1);
-                        detail.Add("Number2", GetNumberOfStr(towarr[0]));
-                        detail.Add("Number3", towarr[1]);
-                        detail.Add("Unit", unit);
-                        detail.Add("MaterialDesc", fourRow);
-                        detail.Add("IssueLocation", threeRow);
-                        list.Add(detail);
-                    }
-                    #endregion
-                }
+                    GetDetailList(list, dataArr, begIndex, endIndex, contentRow);
             }
             #endregion
             #region 英文版PDF获取明细获取方式
@@ -444,16 +422,16 @@ namespace PDF_Service
                 //明细开始索引
                 int begIndex = check_EN + 2;
                 //明细结束索引
-                int check_index = dataArr.IndexOf("Shipment details");
+                int check_index = dataArr.IndexOf(GetValue("Shipment_details2"));
                 #region 数据分页，索引获取
                 int endIndex = 0;
                 if (check_index > 0)
                 {
-                    endIndex = dataArr.LastIndexOf("______________________________________________________________________________");
+                    endIndex = dataArr.LastIndexOf(PDF_Line);
                 }
                 else
                 {
-                    endIndex = dataArr.IndexOf("Sold-to address 售达方地址");
+                    endIndex = dataArr.IndexOf(GetValue("Sold_to_address"));
                 }
                 #endregion
                 //明细的行数
@@ -507,13 +485,13 @@ namespace PDF_Service
             #endregion
             #region Shipment details 发货批次详述
             //获取发货批次详述开始索引
-            int index_shipment = dataArr.IndexOf("Shipment details 发货批次详述");
+            int index_shipment = dataArr.IndexOf(GetValue("Shipment_details"));
             if (index_shipment < 0)
             {
-                index_shipment = dataArr.IndexOf("Shipment details");
+                index_shipment = dataArr.IndexOf(GetValue("Shipment_details2"));
                 if (index_shipment < 0)
                 {
-                    index_shipment = dataArr.LastIndexOf("______________________________________________________________________________");
+                    index_shipment = dataArr.LastIndexOf(PDF_Line);
                 }
             }
             if (index_shipment > 0)
@@ -548,6 +526,76 @@ namespace PDF_Service
             }
             #endregion
         }
+
+        private void GetDetailList(List<Dictionary<string, string>> list, List<string> dataArr, int begIndex, int endIndex, int contentRow)
+        {
+            #region 获取明细
+            //明细当前最后行索引
+            int LastIndex = begIndex;
+            for (int i = 0; i < contentRow; i++)
+            {
+                //最后行索引不能大于结束索引
+                if (LastIndex < endIndex)
+                {
+                    LastIndex += 4;
+                    int index = (begIndex + (i * 4));
+                    Dictionary<string, string> detail = new Dictionary<string, string>();
+                    while (dataArr[index].Split(' ').Length < 10 ||
+                        dataArr[index].Split(' ').Length > 15 ||
+                        dataArr[index].Split(' ')[0].Length != 6)
+                    {
+                        index++;
+                    }
+                    string firstRow = RemoveStrSpace(dataArr[index]);
+                    string[] firstArr = firstRow.Replace("\\s+", " ").Split(' ');
+                    string towRow = dataArr[index + 1],
+                           threeRow = dataArr[index + 2],
+                           fourRow = dataArr[index + 3];
+                    #region 多行物料描述操作
+                    while ((dataArr[index + 4].Split(' ')[0].Length != 6
+                        || !CheckStrIsNumber(dataArr[index + 4].Split(' ')[0])
+                        || dataArr[index + 4].Split(' ').Length < 10
+                        || dataArr[index + 4].Split(' ').Length > 15)
+                        && (index + 4) < endIndex)
+                    {
+                        fourRow = fourRow + " " + dataArr[index + 4];
+                        index++;
+                        LastIndex++;
+                    }
+                    #endregion
+                    string ProjectRow = firstArr[0];
+                    detail.Add("ProjectRow", ProjectRow);
+                    string strNum = firstArr[2];
+                    if (firstArr.Length == 3)
+                    {
+                        detail.Add("MaterialCode", firstArr[1].Trim());
+                    }
+                    if (firstArr.Length > 3)
+                    {
+                        strNum = firstArr[firstArr.Length - 1];
+                        string code = string.Empty;
+                        for (int j = 0; j < firstArr.Length; j++)
+                        {
+                            if (firstArr[j] != ProjectRow && firstArr[j] != strNum)
+                                code += " " + firstArr[j];
+                        }
+                        detail.Add("MaterialCode", code.Trim());
+                    }
+                    string num1 = GetNumberOfStr(strNum);
+                    string unit = strNum.Replace(num1, "");
+                    string[] towarr = towRow.Split('/');
+                    detail.Add("Number", num1);
+                    detail.Add("Number2", GetNumberOfStr(towarr[0]));
+                    detail.Add("Number3", towarr[1]);
+                    detail.Add("Unit", unit);
+                    detail.Add("MaterialDesc", fourRow);
+                    detail.Add("IssueLocation", threeRow);
+                    list.Add(detail);
+                }
+            }
+            #endregion
+        }
+
         /// <summary>
         /// 把一个或多个空格替换成一个空格
         /// </summary>
@@ -556,6 +604,7 @@ namespace PDF_Service
         {
             return new Regex("[\\s]+").Replace(str, " ");
         }
+
         /// <summary>
         /// 获取字符串中的数字
         /// </summary>
@@ -565,6 +614,7 @@ namespace PDF_Service
         {
             return new Regex("[^\\d.\\d]").Replace(str, "");
         }
+
         /// <summary>
         /// 验证一个字符串是否是纯数字
         /// </summary>
@@ -574,6 +624,7 @@ namespace PDF_Service
         {
             return new Regex("^\\d+$").IsMatch(str);
         }
+
         /// <summary>
         /// 将字典类型序列化为json字符串
         /// </summary>
@@ -585,15 +636,23 @@ namespace PDF_Service
         {
             if (dict.Count == 0)
                 return "";
-            string jsonStr = JsonConvert.SerializeObject(dict);
-            return jsonStr;
+            return JsonConvert.SerializeObject(dict);
+        }
+        /// <summary>
+        /// 根据Key取Value值
+        /// </summary>
+        /// <param name="key"></param>
+        public static string GetValue(string key)
+        {
+            return ConfigurationManager.AppSettings[key].ToString();
         }
 
-        public string[] GetPDFPaths()
+        public string[] GetPDFPaths(string file)
         {
-            String path = @"C:\Users\Administrator\Desktop\pdf\发货\发货";
+            //String path = @"C:\Users\Administrator\Desktop\pdf\发货\发货";
             //path = @"C:\Users\Administrator\Desktop\pdf\CDC\发货";
-            return Directory.GetFiles(path, "*.pdf");
+            //path = @"C:\Users\Administrator\Desktop\pdf\发货2\发货";
+            return Directory.GetFiles(file, "*.pdf");
         }
         private void btn_adc_Click(object sender, EventArgs e)
         {
@@ -626,20 +685,21 @@ namespace PDF_Service
             //    }
             //}
             #endregion
-            string[] asd = GetPDFPaths();
             #region 测试所有文件下的PDF文件
             int index = 0;
+            string err = "";
             try
             {
                 Dictionary<string, Dictionary<string, object>> AllData = new Dictionary<string, Dictionary<string, object>>();
-                string[] files = GetPDFPaths();
+                string[] files = GetPDFPaths(textBox1.Text.Trim());
                 foreach (var file in files)
                 {
                     index++;
-                    //if (index == 713)
+                    //if (index == 61)
                     //{
 
                     //}
+                    err = file;
                     PdfReader reader = new PdfReader(file);
                     PdfReaderContentParser parser = new PdfReaderContentParser(reader);
                     #region 测试代码
@@ -656,11 +716,16 @@ namespace PDF_Service
                     string jsonData = string.Empty;
                     Dictionary<string, string> data = new Dictionary<string, string>();
                     List<Dictionary<string, string>> list = new List<Dictionary<string, string>>();
+                    int currPage = 1;//PDF当前页，默认为第一页
                     for (int i = 1; i <= Pdf_Pages; i++)
                     {
                         ITextExtractionStrategy strategy = parser.ProcessContent<SimpleTextExtractionStrategy>(i, new SimpleTextExtractionStrategy());
                         string contentOfPage = strategy.GetResultantText();
-                        GetPDFText(contentOfPage, data, list);
+                        if (currPage != 1 && currPage != Pdf_Pages)
+                            GetPDFText(contentOfPage, data, list, currPage);
+                        else
+                            GetPDFText(contentOfPage, data, list);
+                        currPage++;
                     }
                     Dictionary<string, object> Obj = new Dictionary<string, object>();
                     Obj.Add("Head", data);
@@ -690,7 +755,7 @@ namespace PDF_Service
             catch (Exception ex)
             {
 
-                richTextBox.Text = index.ToString() + ex.Message;
+                richTextBox.Text = err + "*********" + index.ToString() + ex.Message;
             }
             #endregion
         }
