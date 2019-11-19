@@ -9,6 +9,7 @@ namespace SqlSugarDemo.ORM
 
         public SqlSugarClient DB => GetInstance();
 
+
         SqlSugarClient GetInstance()
         {
             string connectionString = "Server=.;Database=SqlSugarDemo;Integrated Security=False;User ID=sa;Password=123456";
