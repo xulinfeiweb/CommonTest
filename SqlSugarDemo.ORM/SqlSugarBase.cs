@@ -4,9 +4,11 @@ using System.Linq;
 
 namespace SqlSugarDemo.ORM
 {
+    /// <summary>
+    /// 数据库上下文
+    /// </summary>
     public class SqlSugarBase
     {
-
         public SqlSugarClient DB => GetInstance();
 
         SqlSugarClient GetInstance()
