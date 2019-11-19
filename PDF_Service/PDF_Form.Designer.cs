@@ -42,6 +42,7 @@
             this.btn_pdf = new System.Windows.Forms.Button();
             this.btn_adc = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // openFileDialog
@@ -118,7 +119,7 @@
             // 
             // btn_query
             // 
-            this.btn_query.Location = new System.Drawing.Point(183, 166);
+            this.btn_query.Location = new System.Drawing.Point(114, 166);
             this.btn_query.Name = "btn_query";
             this.btn_query.Size = new System.Drawing.Size(109, 23);
             this.btn_query.TabIndex = 18;
@@ -160,11 +161,22 @@
             this.textBox1.Size = new System.Drawing.Size(226, 21);
             this.textBox1.TabIndex = 22;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(261, 166);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(109, 23);
+            this.button1.TabIndex = 23;
+            this.button1.Text = "PDF内容转XML";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // PDF_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1041, 730);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.btn_adc);
             this.Controls.Add(this.txt_pdf_path);
@@ -180,6 +192,7 @@
             this.Controls.Add(this.btn_id);
             this.Name = "PDF_Form";
             this.Text = "PDF_Form";
+            this.Load += new System.EventHandler(this.PDF_Form_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -201,6 +214,7 @@
         private System.Windows.Forms.Button btn_pdf;
         private System.Windows.Forms.Button btn_adc;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button1;
     }
 }
 
