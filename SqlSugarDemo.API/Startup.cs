@@ -30,12 +30,12 @@ namespace SqlSugarDemo.API
                     s.SwaggerDoc("v1", new OpenApiInfo
                     {
                         Version = "v1",
-                        Title = "Bingle API",
+                        Title = "SqlSugarDemo.API",
                         Description = "一个简单的ASP.NET Core Web API",
                         TermsOfService = new Uri("https://www.cnblogs.com/taotaozhuanyong"),
                         Contact = new OpenApiContact
                         {
-                            Name = "bingle",
+                            Name = "SqlSugarDemo",
                             Email = string.Empty,
                             Url = new Uri("https://www.cnblogs.com/taotaozhuanyong"),
                         },
@@ -51,7 +51,13 @@ namespace SqlSugarDemo.API
                     // 启用xml注释
                     s.IncludeXmlComments(xmlPath);
                 });
-            services.AddControllers();
+            //services.AddControllers();
+            services.AddControllers(option =>
+            {
+                //设置异常过滤器
+                option.Filters.Add(new MyExceptionFilter());
+            });
+            services.AddRouting();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

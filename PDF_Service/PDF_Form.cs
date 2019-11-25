@@ -173,6 +173,18 @@ namespace PDF_Service
             string ShipCode = "";
             if (index_number > -1)
             {
+                //int index_Ourref = dataArr.IndexOf(Config.GetValue("Our_ref_date"));
+                //string[] strArr = null;
+                //if ((index_Ourref - index_order) > 2)
+                //{
+                //    string orderStr = dataArr[index_order + 1] + dataArr[index_order + 2];
+                //    strArr = orderStr.Split('/');
+                //}
+                //else
+                //    strArr = dataArr[index_order + 1].Split('/');
+                //data.Add("ORDNUM", strArr[0].Trim());
+                //data.Add("ORDDAT", strArr[3] + "-" + strArr[1].Trim() + "-" + strArr[2]);
+
                 string[] strArr = dataArr[index_number + 1].Split('/');
                 ShipCode = strArr[0].Trim();
                 data.Add("ShipCode", strArr[0].Trim());
