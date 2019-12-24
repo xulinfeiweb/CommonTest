@@ -9,6 +9,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Transactions;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -66,7 +67,7 @@ namespace PDF_Service
                     if (!string.IsNullOrWhiteSpace(img_path))
                     {
                         iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(img_path);
-                        img.ScaleAbsolute(72, 100);
+                        img.ScaleAbsolute(72, 72);
                         img.SetAbsolutePosition(76, 475);
                         over2.AddImage(img);
                     }
@@ -142,7 +143,7 @@ namespace PDF_Service
                             GetPDFText(contentOfPage, data, list);
                         currPage++;
                     }
-                    
+
                     Dictionary<string, object> Obj = new Dictionary<string, object>();
                     Obj.Add("Head", data);
                     Obj.Add("Data", list);
@@ -727,6 +728,8 @@ namespace PDF_Service
         }
         private void btn_adc_Click(object sender, EventArgs e)
         {
+            TransactionScope scope = new TransactionScope();
+            scope.Complete();
             #region MyRegion
             //if (string.IsNullOrWhiteSpace(txtID.Text))
             //{
@@ -825,7 +828,6 @@ namespace PDF_Service
             }
             catch (Exception ex)
             {
-
                 richTextBox.Text = err + "*********" + index.ToString() + ex.Message;
             }
             #endregion
@@ -858,7 +860,6 @@ namespace PDF_Service
                             GetPDFTextToXML(contentOfPage, data, list);
                         currPage++;
                     }
-
                     Dictionary<string, object> detial = new Dictionary<string, object>();
                     detial.Add("LN", list);
                     Dictionary<string, object> Obj = new Dictionary<string, object>();
@@ -1214,6 +1215,7 @@ namespace PDF_Service
                         }
                         detail.Add("MTR", code.Trim());
                     }
+
                     string num1 = GetNumberOfStr(strNum);
                     string unit = strNum.Replace(num1, "");
                     string[] towarr = towRow.Split('/');
@@ -1234,5 +1236,6 @@ namespace PDF_Service
         {
 
         }
+         
     }
 }
