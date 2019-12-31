@@ -1,4 +1,6 @@
-﻿using iTextSharp.text;
+﻿using ICSharpCode.SharpZipLib.Checksum;
+using ICSharpCode.SharpZipLib.Zip;
+using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using Newtonsoft.Json;
@@ -1236,6 +1238,72 @@ namespace PDF_Service
         {
 
         }
-         
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string[] files = { "F:\\zipFile" };
+            CreateZip(files, @"C:\Users\Administrator\Desktop\pdf\1231231.zip");
+        }
+
+        /// <summary>
+        /// 压缩文件夹
+        /// </summary>
+        /// <param name="strFile">文件夹数组</param>
+        /// <param name="strZip">压缩文件输出目录</param>
+        public static void CreateZip(string[] strFile, string strZip)
+        {
+            ZipOutputStream outstream = new ZipOutputStream(File.Create(strZip));
+            outstream.SetLevel(9);
+            for (int i = 0, j = strFile.Length; i < j; i++)
+            {
+                string item = strFile[i];
+                if (!Directory.Exists(item))
+                {
+                    continue;
+                }
+                CreateZipFiles(item, outstream, "*.pdf", item);
+            }
+            outstream.Finish();
+            outstream.Close();
+        }
+        /// <summary>
+        /// 递归压缩文件
+        /// </summary>
+        /// <param name="sourceFilePath">待压缩的文件或文件夹路径</param>
+        /// <param name="zipStream">打包结果的zip文件路径（类似 D:\WorkSpace\a.zip）,全路径包括文件名和.zip扩展名</param>
+        /// <param name="staticFile"></param>
+        private static void CreateZipFiles(string sourceFilePath, ZipOutputStream zipStream, string searchPattern, string staticFile)
+        {
+            Crc32 crc = new Crc32();
+            string[] filesArray = Directory.GetFileSystemEntries(sourceFilePath, searchPattern);
+            foreach (string file in filesArray)
+            {
+                //如果当前是文件夹，递归
+                if (Directory.Exists(file))
+                {
+                    CreateZipFiles(file, zipStream, searchPattern, staticFile);
+                }
+                else
+                {
+                    //如果是文件，开始压缩
+                    FileStream fileStream = File.OpenRead(file);
+
+                    byte[] buffer = new byte[fileStream.Length];
+                    fileStream.Read(buffer, 0, buffer.Length);
+                    string tempFile = file.Substring(staticFile.LastIndexOf("\\") + 1);
+                    ZipEntry entry = new ZipEntry(tempFile);
+
+                    entry.DateTime = DateTime.Now;
+                    entry.Size = fileStream.Length;
+                    fileStream.Close();
+                    crc.Reset();
+                    crc.Update(buffer);
+                    entry.Crc = crc.Value;
+                    zipStream.PutNextEntry(entry);
+
+                    zipStream.Write(buffer, 0, buffer.Length);
+                }
+            }
+        }
     }
 }
