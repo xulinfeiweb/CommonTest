@@ -1,8 +1,5 @@
-﻿using O2S.Components.PDFRender4NET;
-using PdfiumViewer;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;

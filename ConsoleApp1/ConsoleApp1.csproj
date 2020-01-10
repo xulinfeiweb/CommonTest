@@ -39,7 +39,7 @@
       <HintPath>..\packages\iTextSharp.5.5.13.1\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="O2S.Components.PDFRender4NET">
-      <HintPath>..\..\..\..\..\Desktop\O2SComponentsPDFRender4NET_jb51\O2S.Components.PDFRender4NET\O2S.Components.PDFRender4NET.dll</HintPath>
+      <HintPath>O2SComponentsPDFRender4NET_jb51\O2S.Components.PDFRender4NET\O2S.Components.PDFRender4NET.dll</HintPath>
     </Reference>
     <Reference Include="PdfiumViewer, Version=2.13.0.0, Culture=neutral, PublicKeyToken=91e4789cfb0609e0, processorArchitecture=MSIL">
       <HintPath>..\packages\PdfiumViewer.2.13.0.0\lib\net20\PdfiumViewer.dll</HintPath>
@@ -62,7 +62,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="O2SComponentsPDFRender4NET_jb51.rar" />
+    <None Include="O2SComponentsPDFRender4NET_jb51\O2S.Components.PDFRender4NET\DLL下载.url" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="O2SComponentsPDFRender4NET_jb51\O2S.Components.PDFRender4NET\dll安装方法.txt" />
+    <Content Include="O2SComponentsPDFRender4NET_jb51\O2S.Components.PDFRender4NET\O2S.Components.PDFRender4NET.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\ImageResizer.Plugins.PdfiumRenderer.Pdfium.Dll.1.0.1\build\ImageResizer.Plugins.PdfiumRenderer.Pdfium.Dll.targets" Condition="Exists('..\packages\ImageResizer.Plugins.PdfiumRenderer.Pdfium.Dll.1.0.1\build\ImageResizer.Plugins.PdfiumRenderer.Pdfium.Dll.targets')" />
