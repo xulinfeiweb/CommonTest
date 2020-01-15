@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29409.12
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{547AE4ED-C127-4A6C-91DE-6B66BB4DE77C}"
 EndProject
@@ -32,6 +32,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlSugarDemo.ORM", "SqlSugarDemo.ORM\SqlSugarDemo.ORM.csproj", "{4A2E1AFA-68CB-4DDC-8460-A030C8D9A8D6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{1BF1128D-C71C-43E0-B14E-E7AF9ECE822D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMS_Verif", "SMS_Verif\SMS_Verif.csproj", "{45434081-B7D2-4FF6-BEF2-F4BFB04FE7C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +97,10 @@ Global
 		{1BF1128D-C71C-43E0-B14E-E7AF9ECE822D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BF1128D-C71C-43E0-B14E-E7AF9ECE822D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BF1128D-C71C-43E0-B14E-E7AF9ECE822D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45434081-B7D2-4FF6-BEF2-F4BFB04FE7C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45434081-B7D2-4FF6-BEF2-F4BFB04FE7C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45434081-B7D2-4FF6-BEF2-F4BFB04FE7C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45434081-B7D2-4FF6-BEF2-F4BFB04FE7C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

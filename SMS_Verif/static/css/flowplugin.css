@@ -1,0 +1,100 @@
+@charset "utf-8";
+
+
+/*-------------
+ * 
+ * 手机需要换算单位
+ * ------------*/
+
+*{padding:0;margin:0;}
+
+/*字体颜色*/
+.fc-orange {color:#fd6b00;}
+.fc-grey {color:#9d9d9d;}
+
+
+/* flow start */
+.flowSwrap {
+	position: relative;
+	margin: 0.5rem 0 1rem 0;
+
+	/* width: 36rem; */ /* 720px; */
+	/*background-color: rgba(0,0,0,.3);*/
+}
+
+.flowCell {
+	padding: 0.45rem;/* 10px 0; */
+	overflow: hidden;
+}
+.cell-left {
+    width: 3.5rem; /* 100px; */
+    padding-right: 0.4rem; /* 28px; */
+    text-align: right;
+    display: table-cell; 
+	vertical-align:middle;
+    /*background-color: goldenrod;*/
+}
+.cell-right {
+	width: 14rem;
+    padding-left: 0.5rem; /* 10px; */
+    text-align: left;
+    display: table-cell; 
+    vertical-align:middle;
+    /*background-color:green;*/
+}
+.cell-center {
+    height: 2.5rem; /* 60px; */
+    /* width: 1rem; 20px; */
+    display: table-cell; 
+    vertical-align:middle;
+    /*background-color: azure;*/
+}
+.cell-size {
+	font-size: 0.8rem; /* 10px; */
+}
+.cls_ydh{
+	margin: 1.5rem 0 1rem 2rem;
+	color:#9d9d9d;
+	font-size: 0.8rem; /* 16px; */
+}
+.cls_ydh .order_number{
+	color: black;
+	font-weight: bold;
+}
+.line{
+	border-bottom:1px solid #ddd;
+	text-align: center;
+}
+.flow-line {
+	position: absolute;
+	height: 0.35rem; /* 10px; */
+	width: 0.1rem; /*2px;*/ /* 线宽不需要变 */
+	background-color: #aaaaaa;
+	/*top:10px;
+	left:210px;*/
+	z-index: -1;
+}
+.cls_detail{
+    font-size: 0.8rem;
+    text-decoration: none;
+    /* margin-left: 2.5rem; */
+    color: black;
+    display: block;
+}
+.cls_iframe{
+	display:none;
+}
+.tel_img {
+	height: 0.6rem;
+	width: 0.6rem;
+}
+.firstImg {
+	height: 0.8rem;
+	width: 0.8rem;
+}
+.headimg{
+	height: 2rem;
+	width: 2rem;
+	margin-top: 0.3rem;
+}
+/*  flow  end */
