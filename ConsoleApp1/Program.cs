@@ -13,14 +13,20 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
 
-            //http://www.coozhi.com/xiuxianaihao/shuhuayinyue/76855.html
-            string path = @"C:\Users\Administrator\Desktop\pdf\800479302_636495605353158628.pdf";
-            string coutpath = @"F:\sample";
-            string pathName = "";
-            PDFHelper.ConvertPDF2Image(path, coutpath, ImageFormat.Jpeg, PDFHelper.Definition.Three, out pathName);
-            string[] files = Directory.GetFiles(pathName);
-            PDFHelper.ConvertJPG2PDF(files, pathName + DateTime.Now.ToString("yyyyMMddhhmmss") + ".pdf");
-            PDFHelper.DeleteFile(files, ImageFormat.Jpeg.ToString());
+            ////http://www.coozhi.com/xiuxianaihao/shuhuayinyue/76855.html
+            //string path = @"C:\Users\Administrator\Desktop\pdf\800479302_636495605353158628.pdf";
+            //string coutpath = @"F:\sample";
+            //string pathName = "";
+            //PDFHelper.ConvertPDF2Image(path, coutpath, ImageFormat.Jpeg, PDFHelper.Definition.Three, out pathName);
+            //string[] files = Directory.GetFiles(pathName);
+            //PDFHelper.ConvertJPG2PDF(files, pathName + DateTime.Now.ToString("yyyyMMddhhmmss") + ".pdf");
+            //PDFHelper.DeleteFile(files, ImageFormat.Jpeg.ToString());
+            string path = @"D:\保税仓库出口审批表_CDFI006005_20200309118601\";
+
+            string[] str = Directory.GetFiles(path, "*.pdf");
+            //PDFmerge.mergePDFFiles(str, "qqqqq");
+            string pdfPath = @"C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Test\ConsoleApp1\asd\aaaa.pdf";
+            PdfHelper.MergePDF(str, pdfPath);
             Console.ReadLine();
         }
         public enum Definition

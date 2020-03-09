@@ -46,6 +46,12 @@ namespace PDF_Service
             using (FileStream stream = new FileStream(currpath, FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 PdfReader pdfReader = new PdfReader(path);//读pdf
+
+                PdfWriter _writer;
+                Document _doc = new Document(PageSize.A4.Rotate(), 20, 20, 10, 0);
+                _writer = PdfWriter.GetInstance(_doc, new FileStream(path, FileMode.Create));
+                _doc.Open();
+
                 using (PdfStamper pdfStamper = new PdfStamper(pdfReader, stream))
                 {
                     //插入文字
@@ -73,6 +79,7 @@ namespace PDF_Service
                         img.SetAbsolutePosition(76, 475);
                         over2.AddImage(img);
                     }
+
                     //清空文本
                     ClearTextBox();
                     MessageBox.Show("生成成功。", "提示");
