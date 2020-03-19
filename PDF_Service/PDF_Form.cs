@@ -13,6 +13,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Transactions;
 using System.Windows.Forms;
+using System.Reflection;
+using TestReflex;
 using System.Xml;
 
 namespace PDF_Service
@@ -1311,6 +1313,184 @@ namespace PDF_Service
                     zipStream.Write(buffer, 0, buffer.Length);
                 }
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string dir = System.IO.Path.GetFullPath("../..") + "\\Temp\\";
+            #region 测试反射
+            object[] parameters = new object[1];
+            parameters[0] = 28;
+            Type type = Type.GetType("TestReflex.RefText, TestReflex, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
+            Fbase instance = (Fbase)Activator.CreateInstance(type, parameters);
+            string name = instance.name;
+
+            //设置Reads方法中的参数类型，Type[]类型；如有多个参数可以追加多个   
+            Type[] params_type = new Type[2];
+            params_type[0] = typeof(DataTable);
+            params_type[1] = typeof(Dictionary<string, string>);
+            //设置Reads方法中的参数值；如有多个参数可以追加多个 
+            DataTable dt1 = new DataTable();
+            dt1.Columns.Add("Item", typeof(string));
+            DataRow dr1 = dt1.NewRow();
+            dr1["Item"] = "123";
+            dt1.Rows.Add(dr1);
+            Dictionary<string, string> dic1 = new Dictionary<string, string>();
+            dic1.Add("key", "2");
+            Object[] params_obj = new Object[2];
+            params_obj[0] = dt1;
+            params_obj[1] = dic1;
+            //执行Reads方法
+            object value = type.GetMethod("Reads", params_type).Invoke(instance, params_obj);
+            #endregion
+
+            string WantedPath = Application.StartupPath.Substring(0, Application.StartupPath.LastIndexOf(@"\"));
+            string WantedPath2 = WantedPath.Substring(0, WantedPath.LastIndexOf(@"\"));
+            string path1 = WantedPath2 + "\\Temp\\BUNN\\BUNN模板.doc";
+            string path2 = WantedPath2 + "\\word\\BUNN\\neword.doc";
+            string path3 = WantedPath2 + "\\pdf\\BUNN\\newpdf.pdf";
+            BUNNUtility wordu = new BUNNUtility(path1, path2);
+            #region  生成word
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Item", typeof(string));
+            dt.Columns.Add("PartNo", typeof(string));
+            dt.Columns.Add("ChinaName", typeof(string));
+            dt.Columns.Add("Description", typeof(string));
+            dt.Columns.Add("Model", typeof(string));
+            dt.Columns.Add("Qty", typeof(string));
+            dt.Columns.Add("NetWeight", typeof(string));
+            dt.Columns.Add("GrossWeight", typeof(string));
+            dt.Columns.Add("UnitPrice", typeof(string));
+            dt.Columns.Add("Amount", typeof(string));
+            dt.Columns.Add("Currency", typeof(string));
+            dt.Columns.Add("Origin", typeof(string));
+            dt.Columns.Add("HsCode", typeof(string));
+
+            DataRow dr = dt.NewRow();
+            //dr["Item"] = "Item";
+            //dr["PartNo"] = "PartNo";
+            //dr["ChinaName"] = "中文品名";
+            //dr["Description"] = "Description";
+            //dr["Model"] = "Model";
+            //dr["Qty"] = "Qty";
+            //dr["NetWeight"] = "Net Weight";
+            //dr["GrossWeight"] = "Gross Weight";
+            //dr["UnitPrice"] = "Unit Price";
+            //dr["Amount"] = "Amount";
+            //dr["Currency"] = "Currency";
+            //dr["Origin"] = "Origin";
+            //dr["HsCode"] = "HsCode";
+            //dt.Rows.Add(dr);
+            //第一行
+            dr = dt.NewRow();
+            dr["Item"] = "1";
+            dr["PartNo"] = "42750.0051";
+            dr["ChinaName"] = "咖啡桶";
+            dr["Description"] = "TF SERVER,DSG2 1.5G BLK NOBAS";
+            dr["Model"] = "TF SERVER";
+            dr["Qty"] = "20";
+            dr["NetWeight"] = "114.300";
+            dr["GrossWeight"] = "122.00";
+            dr["UnitPrice"] = "192.13";
+            dr["Amount"] = "3842.60";
+            dr["Currency"] = "USD";
+            dr["Origin"] = "China";
+            dr["HsCode"] = "9617009000";
+            dt.Rows.Add(dr);
+            //第二行
+            dr = dt.NewRow();
+            dr["Item"] = "2";
+            dr["PartNo"] = "32125.0000";
+            dr["ChinaName"] = "咖啡桶";
+            dr["Description"] = "TF SERVER,DSG2 1.5G BLK NOBAS";
+            dr["Model"] = "AIRPOT";
+            dr["Qty"] = "27";
+            dr["NetWeight"] = "59.400";
+            dr["GrossWeight"] = "64.00";
+            dr["UnitPrice"] = "29.75";
+            dr["Amount"] = "803.25";
+            dr["Currency"] = "USD";
+            dr["Origin"] = "China";
+            dr["HsCode"] = "9617009000";
+            dt.Rows.Add(dr);
+            //第3行
+            dr = dt.NewRow();
+            dr["Item"] = "3";
+            dr["PartNo"] = "32125.0000";
+            dr["ChinaName"] = "咖啡桶";
+            dr["Description"] = "TF SERVER,DSG2 1.5G BLK NOBAS";
+            dr["Model"] = "AIRPOT";
+            dr["Qty"] = "3";
+            dr["NetWeight"] = "6.300";
+            dr["GrossWeight"] = "7.00";
+            dr["UnitPrice"] = "29.30";
+            dr["Amount"] = "87.90";
+            dr["Currency"] = "USD";
+            dr["Origin"] = "China";
+            dr["HsCode"] = "9617009000";
+            dt.Rows.Add(dr);
+            //第4行
+            dr = dt.NewRow();
+            dr["Item"] = "4";
+            dr["PartNo"] = "32125.0000";
+            dr["ChinaName"] = "咖啡桶";
+            dr["Description"] = "TF SERVER,DSG2 1.5G BLK NOBAS";
+            dr["Model"] = "AIRPOT";
+            dr["Qty"] = "1";
+            dr["NetWeight"] = "2.300";
+            dr["GrossWeight"] = "3.00";
+            dr["UnitPrice"] = "29.09";
+            dr["Amount"] = "29.09";
+            dr["Currency"] = "USD";
+            dr["Origin"] = "China";
+            dr["HsCode"] = "9617009000";
+            dt.Rows.Add(dr);
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("BuyerName", "Bunn（Shanghai）Trading CO., LTD");
+            dic.Add("CID", "BUNN2020-25");
+            dic.Add("BuyerAddress", "A208, No. 1618 Yishan Road, Minhang District, Shanghai, China 201103");
+            dic.Add("Date", "2020-2-28");
+            dic.Add("SellerName", "BUNN-O-MATIC CORPORATION");
+            dic.Add("SellerAddress", "1400 Stevenson Drive, Springfield, illinois, USA, 62703");
+            dic.Add("Origin", "China");
+            bool ck = wordu.GenerateWord(dt, dic);
+            if (ck)
+            {
+                MessageBox.Show("生成成功。");
+            }
+            #endregion
+            #region word转换PDF
+            bool sn = wordu.WordToPdf(path2, path3);
+            if (sn)
+            {
+                MessageBox.Show("生成成功。");
+            }
+            #endregion
+        }
+    }
+
+    public class MyClass
+    {
+
+        public void m1()
+        {
+            Console.WriteLine("Called method 1.");
+        }
+
+        public static int m2(int x)
+        {
+            return x * x;
+        }
+
+        public void m3(int x, double y)
+        {
+            Console.WriteLine("Called method 3, paramaters: x = {0}, y = {1:E}.", x, y);
+        }
+
+
+        private static string m5(double x) //私有静态方法，不能直接调用，但可以绑定到委托  
+        {
+            return Math.Sqrt(x).ToString();
         }
     }
 }

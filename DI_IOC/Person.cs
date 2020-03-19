@@ -17,9 +17,9 @@ namespace DI_IOC
             this.age = age;
             this.phone = phone;
         }
-        public void Read()
+        public string Read(string str)
         {
-
+            return str + "123";
         }
     }
 }

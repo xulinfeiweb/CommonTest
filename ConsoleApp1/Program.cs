@@ -26,7 +26,7 @@ namespace ConsoleApp1
             string[] str = Directory.GetFiles(path, "*.pdf");
             //PDFmerge.mergePDFFiles(str, "qqqqq");
             string pdfPath = @"C:\Users\Administrator\Documents\Visual Studio 2015\Projects\Test\ConsoleApp1\asd\aaaa.pdf";
-            PdfHelper.MergePDF(str, pdfPath);
+            PDFmerge.MergePDF(str, pdfPath);
             Console.ReadLine();
         }
         public enum Definition

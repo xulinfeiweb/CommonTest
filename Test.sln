@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMS_Verif", "SMS_Verif\SMS_Verif.csproj", "{45434081-B7D2-4FF6-BEF2-F4BFB04FE7C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestReflex", "TestReflex\TestReflex.csproj", "{FC2AA46C-119A-4C73-A7C3-B8B61D638F6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,10 @@ Global
 		{45434081-B7D2-4FF6-BEF2-F4BFB04FE7C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45434081-B7D2-4FF6-BEF2-F4BFB04FE7C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45434081-B7D2-4FF6-BEF2-F4BFB04FE7C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC2AA46C-119A-4C73-A7C3-B8B61D638F6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC2AA46C-119A-4C73-A7C3-B8B61D638F6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC2AA46C-119A-4C73-A7C3-B8B61D638F6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC2AA46C-119A-4C73-A7C3-B8B61D638F6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

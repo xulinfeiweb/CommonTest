@@ -3,13 +3,15 @@ using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
 using System.IO;
+
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace ConsoleApp1
 {
-    public class PdfHelper
+    public class PDFmerge
     {
         /// <summary>
         /// 读取合并的pdf文件名称
@@ -129,4 +131,6 @@ namespace ConsoleApp1
             }
         }
     }
+  
+
 }
