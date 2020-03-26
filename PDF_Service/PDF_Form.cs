@@ -1324,7 +1324,6 @@ namespace PDF_Service
             Type type = Type.GetType("TestReflex.RefText, TestReflex, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
             Fbase instance = (Fbase)Activator.CreateInstance(type, parameters);
             string name = instance.name;
-
             //设置Reads方法中的参数类型，Type[]类型；如有多个参数可以追加多个   
             Type[] params_type = new Type[2];
             params_type[0] = typeof(DataTable);
@@ -1335,6 +1334,7 @@ namespace PDF_Service
             DataRow dr1 = dt1.NewRow();
             dr1["Item"] = "123";
             dt1.Rows.Add(dr1);
+            
             Dictionary<string, string> dic1 = new Dictionary<string, string>();
             dic1.Add("key", "2");
             Object[] params_obj = new Object[2];
@@ -1453,6 +1453,7 @@ namespace PDF_Service
             dic.Add("SellerName", "BUNN-O-MATIC CORPORATION");
             dic.Add("SellerAddress", "1400 Stevenson Drive, Springfield, illinois, USA, 62703");
             dic.Add("Origin", "China");
+
             bool ck = wordu.GenerateWord(dt, dic);
             if (ck)
             {

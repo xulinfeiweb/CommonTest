@@ -72,9 +72,20 @@ namespace PDF_Service
                 InsertCell(2, TotalIndex, 8, "");
                 SetFont_Table(2, TotalIndex, 8, "Arial", 10, 0);
                 #endregion
+
                 SetParagraph_Table(wDoc.Content.Tables[2], -1, 0);
                 #endregion
-                //#region 加入图片
+                #region 文档中插入表格
+                //文档中插入表格
+                object obtable = null;
+                //doc.Bookmarks.get_Item(ref obtable).Range.Tables.Add(doc.Bookmarks.get_Item(ref obtable).Range, 12, 3, ref Nothing, ref Nothing);
+                word.Table newTable = wDoc.Tables.Add(wDoc.Bookmarks.get_Item(ref obtable).Range, 12, 3, ref Nothing, ref Nothing);
+                newTable.Borders.OutsideLineStyle = word.WdLineStyle.wdLineStyleSingle;
+                newTable.Borders.InsideLineStyle = word.WdLineStyle.wdLineStyleSingle;
+                //给文档的最后一行再添加内容
+                wDoc.Paragraphs.Last.Range.Text = "最后一行";
+                #endregion
+                #region 加入图片
                 ////加入图片，并指定标签
                 //string pic1 = "Pic1";
                 //object pic2 = "Pic2";
@@ -85,7 +96,7 @@ namespace PDF_Service
                 //word.Shape s = wDoc.Application.ActiveDocument.InlineShapes[1].ConvertToShape();
                 //s.WrapFormat.Type = word.WdWrapType.wdWrapBehind;
                 //wDoc.Bookmarks.get_Item(ref pic2).Range.InlineShapes.AddPicture(picpath2, ref Nothing, ref Nothing, ref Nothing);
-                //#endregion
+                #endregion
                 wDoc.SaveAs(ref saveFile, ref Nothing, ref Nothing, ref Nothing, ref Nothing, ref Nothing, ref Nothing,
                       ref Nothing, ref Nothing, ref Nothing, ref Nothing, ref Nothing, ref Nothing, ref Nothing, ref Nothing, ref Nothing);
 

@@ -123,7 +123,7 @@ namespace WindowsFormsApplication4
             string Checkword = "K21ZMKG3U0v9";
             string verifyCode = MD5ToBase64String(xml + Checkword);
             string requestUrl = "http://bsp-oisp.sf-express.com/bsp-oisp/sfexpressService";//开发环境地址
-            requestUrl = "http://218.17.248.244:11080/bsp-oisp/sfexpressService";
+            //requestUrl = "http://218.17.248.244:11080/bsp-oisp/sfexpressService";
             //requestUrl = "http://218.17.248.244:11080/bsp-oisp/ws/sfexpressService";
             //requestUrl= "http://bsp-oisp.sf-express.com/bsp-oisp/sfexpressService";
             return DoPost(requestUrl, xml, verifyCode);//这就得到了返回结果，解析部分就不记了，想起来也没什么小点了

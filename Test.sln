@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMS_Verif", "SMS_Verif\SMS_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestReflex", "TestReflex\TestReflex.csproj", "{FC2AA46C-119A-4C73-A7C3-B8B61D638F6B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SF_Service2", "WindowsFormsApplication4\SF_Service2.csproj", "{F9613277-0D69-40BE-A773-8377597D3D1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,10 @@ Global
 		{FC2AA46C-119A-4C73-A7C3-B8B61D638F6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC2AA46C-119A-4C73-A7C3-B8B61D638F6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC2AA46C-119A-4C73-A7C3-B8B61D638F6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9613277-0D69-40BE-A773-8377597D3D1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9613277-0D69-40BE-A773-8377597D3D1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9613277-0D69-40BE-A773-8377597D3D1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9613277-0D69-40BE-A773-8377597D3D1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
