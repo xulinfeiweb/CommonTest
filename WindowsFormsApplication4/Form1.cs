@@ -119,7 +119,7 @@ namespace WindowsFormsApplication4
                     <Waybill type='2' waybillNo='SF1011470276085' orderId='' phone='2159' /> 
                   </Body> 
                 </Request>";
- 
+
             string Checkword = "K21ZMKG3U0v9";
             string verifyCode = MD5ToBase64String(xml + Checkword);
             string requestUrl = "http://bsp-oisp.sf-express.com/bsp-oisp/sfexpressService";//开发环境地址
@@ -135,6 +135,7 @@ namespace WindowsFormsApplication4
             string result = Convert.ToBase64String(MD5);//Base64
             return result;
         }
+
         public string DoPost(string Url, string xml, string verifyCode)
         {
             try
@@ -169,6 +170,7 @@ namespace WindowsFormsApplication4
                 return ex.Message;
             }
         }
+
         public static class JsonUntity
         {
             /// <summary>
@@ -204,7 +206,7 @@ namespace WindowsFormsApplication4
                 return jsonDict;
 
             }
-             
+
         }
     }
 }

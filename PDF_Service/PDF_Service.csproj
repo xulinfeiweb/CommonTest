@@ -152,6 +152,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Excel格式解析.rar" />
     <None Include="packages.config" />
     <None Include="PDFService.rar" />
     <None Include="PDFService\GenerateWord\Temp\BRUKER\BRUKER模板.doc" />
