@@ -50,6 +50,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Aspose.Words, Version=6.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Desktop\pdf\Aspose.Words.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -67,7 +71,9 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel.Activities" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -81,7 +87,55 @@
   <ItemGroup>
     <Compile Include="GenerateWord\AllotClearUtility.cs" />
     <Compile Include="GenerateWord\TF%28SHA%29Utility.cs" />
+    <Compile Include="GenerateWord\TFUtility.cs" />
+    <Compile Include="GenerateWord\WordBase2.cs" />
     <Compile Include="PdfHelper.cs" />
+    <Compile Include="PDFService2\BoxList\BoxList.cs" />
+    <Compile Include="PDFService2\BoxList\BoxListPdfPageEventHelper.cs" />
+    <Compile Include="PDFService2\BoxList\Model\BoxListDataModel.cs" />
+    <Compile Include="PDFService2\CInvoice\CInvoicePdfPageEventHelper.cs" />
+    <Compile Include="PDFService2\CInvoice\Model\CInvoiceDataModel.cs" />
+    <Compile Include="PDFService2\CInvoice\PDFCInvoice.cs" />
+    <Compile Include="PDFService2\common\JointacFont.cs" />
+    <Compile Include="PDFService2\common\LinseedSeal.cs" />
+    <Compile Include="PDFService2\common\PDFBase.cs" />
+    <Compile Include="PDFService2\common\PictureHelper.cs" />
+    <Compile Include="PDFService2\common\StringHelper.cs" />
+    <Compile Include="PDFService2\common\TransHelper.cs" />
+    <Compile Include="PDFService2\common\ZipHelper.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\AllotClearUtility.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\BRUKERUtility.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\BUNNUtility.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\COHERENTUtility.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\DEMATICUtility.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\DRAEGERUtility.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\FLUDUtility.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\FMCUtility.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\ILMNUtility.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\JNEUtility.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\Juniper %28SHA%29Utility.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\KUKAUtility.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\LSGUtility.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\TERADYNEUtility.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\TF%28SHA%29Utility.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\WGQBUNN.cs" />
+    <Compile Include="PDFService2\GenerateWord\WordUtility\WordBase.cs" />
+    <Compile Include="PDFService2\Invoice\InvoicePdfPageEventHelper.cs" />
+    <Compile Include="PDFService2\Invoice\Model\InvoiceDataModel.cs" />
+    <Compile Include="PDFService2\Invoice\Model\InvoiceModel.cs" />
+    <Compile Include="PDFService2\Invoice\Model\ProductModel.cs" />
+    <Compile Include="PDFService2\Invoice\PDFInvoice.cs" />
+    <Compile Include="PDFService2\OutStockList\Model\OutStockListDataModel.cs" />
+    <Compile Include="PDFService2\OutStockList\Model\OutStockListModel.cs" />
+    <Compile Include="PDFService2\OutStockList\OutStockListPdfPageEventHelper.cs" />
+    <Compile Include="PDFService2\OutStockList\PDFOutStockList.cs" />
+    <Compile Include="PDFService2\PDFMerge.cs" />
+    <Compile Include="PDFService2\PDFMergePdfPageEventHelper.cs" />
+    <Compile Include="PDFService2\TradeApproval\Model\DataHeader.cs" />
+    <Compile Include="PDFService2\TradeApproval\Model\TradeApprovalDataModel.cs" />
+    <Compile Include="PDFService2\TradeApproval\Model\TradeApprovalModel.cs" />
+    <Compile Include="PDFService2\TradeApproval\PDFTradeApproval.cs" />
+    <Compile Include="PDFService2\TradeApproval\TradeApprovalPdfPageEventHelper.cs" />
     <Compile Include="PDFService\BoxList\BoxList.cs" />
     <Compile Include="PDFService\BoxList\BoxListPdfPageEventHelper.cs" />
     <Compile Include="PDFService\BoxList\Model\BoxListDataModel.cs" />
@@ -231,6 +285,7 @@
     <Folder Include="word\BUNN\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="dll\Aspose.Words.dll" />
     <Content Include="img\chapter.png" />
     <Content Include="img\chapterAndsign.png" />
     <Content Include="img\sign.png" />

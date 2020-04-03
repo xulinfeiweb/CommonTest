@@ -441,7 +441,7 @@ namespace PDF_Service
             }
             #endregion
             #region 英文版PDF获取明细获取方式
-            int check_EN = dataArr.IndexOf("Description ##");
+            int check_EN = dataArr.IndexOf("ProductDescrEN ##");
             if (check_EN > 0)
             {
                 //明细开始索引
@@ -1096,7 +1096,7 @@ namespace PDF_Service
             }
             #endregion
             #region 英文版PDF获取明细获取方式
-            int check_EN = dataArr.IndexOf("Description ##");
+            int check_EN = dataArr.IndexOf("ProductDescrEN ##");
             if (check_EN > 0)
             {
                 //明细开始索引
@@ -1334,7 +1334,7 @@ namespace PDF_Service
             DataRow dr1 = dt1.NewRow();
             dr1["Item"] = "123";
             dt1.Rows.Add(dr1);
-            
+
             Dictionary<string, string> dic1 = new Dictionary<string, string>();
             dic1.Add("key", "2");
             Object[] params_obj = new Object[2];
@@ -1354,96 +1354,96 @@ namespace PDF_Service
             DataTable dt = new DataTable();
             dt.Columns.Add("Item", typeof(string));
             dt.Columns.Add("PartNo", typeof(string));
-            dt.Columns.Add("ChinaName", typeof(string));
-            dt.Columns.Add("Description", typeof(string));
-            dt.Columns.Add("Model", typeof(string));
-            dt.Columns.Add("Qty", typeof(string));
+            dt.Columns.Add("ProductName", typeof(string));
+            dt.Columns.Add("ProductDescrEN", typeof(string));
+            dt.Columns.Add("H2000Index", typeof(string));
+            dt.Columns.Add("ClearQty", typeof(string));
             dt.Columns.Add("NetWeight", typeof(string));
             dt.Columns.Add("GrossWeight", typeof(string));
             dt.Columns.Add("UnitPrice", typeof(string));
             dt.Columns.Add("Amount", typeof(string));
-            dt.Columns.Add("Currency", typeof(string));
-            dt.Columns.Add("Origin", typeof(string));
-            dt.Columns.Add("HsCode", typeof(string));
+            dt.Columns.Add("CurrencyEN", typeof(string));
+            dt.Columns.Add("MadeInEN", typeof(string));
+            dt.Columns.Add("HSCode", typeof(string));
 
             DataRow dr = dt.NewRow();
             //dr["Item"] = "Item";
             //dr["PartNo"] = "PartNo";
-            //dr["ChinaName"] = "中文品名";
-            //dr["Description"] = "Description";
-            //dr["Model"] = "Model";
-            //dr["Qty"] = "Qty";
+            //dr["ProductName"] = "中文品名";
+            //dr["ProductDescrEN"] = "ProductDescrEN";
+            //dr["H2000Index"] = "H2000Index";
+            //dr["ClearQty"] = "ClearQty";
             //dr["NetWeight"] = "Net Weight";
             //dr["GrossWeight"] = "Gross Weight";
             //dr["UnitPrice"] = "Unit Price";
             //dr["Amount"] = "Amount";
-            //dr["Currency"] = "Currency";
-            //dr["Origin"] = "Origin";
-            //dr["HsCode"] = "HsCode";
+            //dr["CurrencyEN"] = "CurrencyEN";
+            //dr["MadeInEN"] = "MadeInEN";
+            //dr["HSCode"] = "HSCode";
             //dt.Rows.Add(dr);
             //第一行
             dr = dt.NewRow();
             dr["Item"] = "1";
             dr["PartNo"] = "42750.0051";
-            dr["ChinaName"] = "咖啡桶";
-            dr["Description"] = "TF SERVER,DSG2 1.5G BLK NOBAS";
-            dr["Model"] = "TF SERVER";
-            dr["Qty"] = "20";
+            dr["ProductName"] = "咖啡桶";
+            dr["ProductDescrEN"] = "TF SERVER,DSG2 1.5G BLK NOBAS";
+            dr["H2000Index"] = "TF SERVER";
+            dr["ClearQty"] = "20";
             dr["NetWeight"] = "114.300";
             dr["GrossWeight"] = "122.00";
             dr["UnitPrice"] = "192.13";
             dr["Amount"] = "3842.60";
-            dr["Currency"] = "USD";
-            dr["Origin"] = "China";
-            dr["HsCode"] = "9617009000";
+            dr["CurrencyEN"] = "USD";
+            dr["MadeInEN"] = "China";
+            dr["HSCode"] = "9617009000";
             dt.Rows.Add(dr);
             //第二行
             dr = dt.NewRow();
             dr["Item"] = "2";
             dr["PartNo"] = "32125.0000";
-            dr["ChinaName"] = "咖啡桶";
-            dr["Description"] = "TF SERVER,DSG2 1.5G BLK NOBAS";
-            dr["Model"] = "AIRPOT";
-            dr["Qty"] = "27";
+            dr["ProductName"] = "咖啡桶";
+            dr["ProductDescrEN"] = "TF SERVER,DSG2 1.5G BLK NOBAS";
+            dr["H2000Index"] = "AIRPOT";
+            dr["ClearQty"] = "27";
             dr["NetWeight"] = "59.400";
             dr["GrossWeight"] = "64.00";
             dr["UnitPrice"] = "29.75";
             dr["Amount"] = "803.25";
-            dr["Currency"] = "USD";
-            dr["Origin"] = "China";
-            dr["HsCode"] = "9617009000";
+            dr["CurrencyEN"] = "USD";
+            dr["MadeInEN"] = "China";
+            dr["HSCode"] = "9617009000";
             dt.Rows.Add(dr);
             //第3行
             dr = dt.NewRow();
             dr["Item"] = "3";
             dr["PartNo"] = "32125.0000";
-            dr["ChinaName"] = "咖啡桶";
-            dr["Description"] = "TF SERVER,DSG2 1.5G BLK NOBAS";
-            dr["Model"] = "AIRPOT";
-            dr["Qty"] = "3";
+            dr["ProductName"] = "咖啡桶";
+            dr["ProductDescrEN"] = "TF SERVER,DSG2 1.5G BLK NOBAS";
+            dr["H2000Index"] = "AIRPOT";
+            dr["ClearQty"] = "3";
             dr["NetWeight"] = "6.300";
             dr["GrossWeight"] = "7.00";
             dr["UnitPrice"] = "29.30";
             dr["Amount"] = "87.90";
-            dr["Currency"] = "USD";
-            dr["Origin"] = "China";
-            dr["HsCode"] = "9617009000";
+            dr["CurrencyEN"] = "USD";
+            dr["MadeInEN"] = "China";
+            dr["HSCode"] = "9617009000";
             dt.Rows.Add(dr);
             //第4行
             dr = dt.NewRow();
             dr["Item"] = "4";
             dr["PartNo"] = "32125.0000";
-            dr["ChinaName"] = "咖啡桶";
-            dr["Description"] = "TF SERVER,DSG2 1.5G BLK NOBAS";
-            dr["Model"] = "AIRPOT";
-            dr["Qty"] = "1";
+            dr["ProductName"] = "咖啡桶";
+            dr["ProductDescrEN"] = "TF SERVER,DSG2 1.5G BLK NOBAS";
+            dr["H2000Index"] = "AIRPOT";
+            dr["ClearQty"] = "1";
             dr["NetWeight"] = "2.300";
             dr["GrossWeight"] = "3.00";
             dr["UnitPrice"] = "29.09";
             dr["Amount"] = "29.09";
-            dr["Currency"] = "USD";
-            dr["Origin"] = "China";
-            dr["HsCode"] = "9617009000";
+            dr["CurrencyEN"] = "USD";
+            dr["MadeInEN"] = "China";
+            dr["HSCode"] = "9617009000";
             dt.Rows.Add(dr);
             Dictionary<string, string> dic = new Dictionary<string, string>();
             dic.Add("BuyerName", "Bunn（Shanghai）Trading CO., LTD");
@@ -1452,7 +1452,7 @@ namespace PDF_Service
             dic.Add("Date", "2020-2-28");
             dic.Add("SellerName", "BUNN-O-MATIC CORPORATION");
             dic.Add("SellerAddress", "1400 Stevenson Drive, Springfield, illinois, USA, 62703");
-            dic.Add("Origin", "China");
+            dic.Add("MadeInEN", "China");
 
             bool ck = wordu.GenerateWord(dt, dic);
             if (ck)
@@ -1463,6 +1463,175 @@ namespace PDF_Service
             #region word转换PDF
             bool sn = wordu.WordToPdf(path2, path3);
             if (sn)
+            {
+                MessageBox.Show("生成成功。");
+            }
+            #endregion
+        }
+        #region Datatable转换为List
+
+        /// <summary>  
+        /// 将Datatable转换为List集合  
+        /// </summary>  
+        /// <typeparam name="T">类型参数</typeparam>  
+        /// <param name="dt">datatable表</param>  
+        /// <returns></returns>  
+        public List<T> DataTableToList<T>(DataTable dt)
+        {
+            var list = new List<T>();
+            Type t = typeof(T);
+            var plist = new List<PropertyInfo>(typeof(T).GetProperties());
+
+            foreach (DataRow item in dt.Rows)
+            {
+                T s = Activator.CreateInstance<T>();
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    PropertyInfo info = plist.Find(p => p.Name == dt.Columns[i].ColumnName);
+                    if (info != null)
+                    {
+                        if (!Convert.IsDBNull(item[i]))
+                        {
+                            info.SetValue(s, item[i], null);
+                        }
+                    }
+                }
+                list.Add(s);
+            }
+            return list;
+        }
+        #endregion
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string WantedPath = Application.StartupPath.Substring(0, Application.StartupPath.LastIndexOf(@"\"));
+            string WantedPath2 = WantedPath.Substring(0, WantedPath.LastIndexOf(@"\"));
+            string path1 = WantedPath2 + "\\Temp\\BUNN\\BUNN模板.doc";
+            string path2 = WantedPath2 + "\\word\\BUNN\\neword.doc";
+            string path3 = WantedPath2 + "\\pdf\\BUNN\\newpdf.pdf";
+            GenerateWord.TFUtility tf = new GenerateWord.TFUtility();
+            #region  生成word
+            DataTable dt = new DataTable();
+            dt.Columns.Add("rowindex", typeof(string));
+            dt.Columns.Add("ProductCode", typeof(string));
+            dt.Columns.Add("ProductName", typeof(string));
+            dt.Columns.Add("ProductDescrEN", typeof(string));
+            dt.Columns.Add("H2000Index", typeof(string));
+            dt.Columns.Add("ClearQty", typeof(decimal));
+            dt.Columns.Add("NetWeight", typeof(decimal));
+            dt.Columns.Add("GrossWeight", typeof(decimal));
+            dt.Columns.Add("UnitPrice", typeof(decimal));
+            dt.Columns.Add("Amount", typeof(decimal));
+            dt.Columns.Add("CurrencyEN", typeof(string));
+            dt.Columns.Add("MadeInEN", typeof(string));
+            dt.Columns.Add("HSCode", typeof(string));
+
+            DataRow dr = dt.NewRow();
+            //dr["rowindex"] = "Item";
+            //dr["ProductCode"] = "PartNo";
+            //dr["ProductName"] = "中文品名";
+            //dr["ProductDescrEN"] = "ProductDescrEN";
+            //dr["H2000Index"] = "H2000Index";
+            //dr["ClearQty"] = "ClearQty";
+            //dr["NetWeight"] = "Net Weight";
+            //dr["GrossWeight"] = "Gross Weight";
+            //dr["UnitPrice"] = "Unit Price";
+            //dr["Amount"] = "Amount";
+            //dr["CurrencyEN"] = "CurrencyEN";
+            //dr["MadeInEN"] = "MadeInEN";
+            //dr["HSCode"] = "HSCode";
+            //dt.Rows.Add(dr);
+            //第一行
+            dr = dt.NewRow();
+            dr["rowindex"] = "1";
+            dr["ProductCode"] = "42750.0051";
+            dr["ProductName"] = "咖啡桶";
+            dr["ProductDescrEN"] = "TF SERVER,DSG2 1.5G BLK NOBAS";
+            dr["H2000Index"] = "TF SERVER";
+            dr["ClearQty"] = 20;
+            dr["NetWeight"] = 114.300;
+            dr["GrossWeight"] = 122.00;
+            dr["UnitPrice"] = 192.13;
+            dr["Amount"] = 3842.60;
+            dr["CurrencyEN"] = "USD";
+            dr["MadeInEN"] = "China";
+            dr["HSCode"] = "9617009000";
+            dt.Rows.Add(dr);
+            //第二行
+            dr = dt.NewRow();
+            dr["rowindex"] = "2";
+            dr["ProductCode"] = "32125.0000";
+            dr["ProductName"] = "咖啡桶";
+            dr["ProductDescrEN"] = "TF SERVER,DSG2 1.5G BLK NOBAS";
+            dr["H2000Index"] = "AIRPOT";
+            dr["ClearQty"] = 27;
+            dr["NetWeight"] = 59.400;
+            dr["GrossWeight"] = 64.00;
+            dr["UnitPrice"] = 29.75;
+            dr["Amount"] = 803.25;
+            dr["CurrencyEN"] = "USD";
+            dr["MadeInEN"] = "China";
+            dr["HSCode"] = "9617009000";
+            dt.Rows.Add(dr);
+            //第3行
+            dr = dt.NewRow();
+            dr["rowindex"] = "3";
+            dr["ProductCode"] = "32125.0000";
+            dr["ProductName"] = "咖啡桶";
+            dr["ProductDescrEN"] = "TF SERVER,DSG2 1.5G BLK NOBAS";
+            dr["H2000Index"] = "AIRPOT";
+            dr["ClearQty"] = 3;
+            dr["NetWeight"] = 6.300;
+            dr["GrossWeight"] = 7.00;
+            dr["UnitPrice"] = 29.30;
+            dr["Amount"] = 87.90;
+            dr["CurrencyEN"] = "USD";
+            dr["MadeInEN"] = "China";
+            dr["HSCode"] = "9617009000";
+            dt.Rows.Add(dr);
+            //第4行
+            dr = dt.NewRow();
+            dr["rowindex"] = "4";
+            dr["ProductCode"] = "32125.0000";
+            dr["ProductName"] = "咖啡桶";
+            dr["ProductDescrEN"] = "TF SERVER,DSG2 1.5G BLK NOBAS";
+            dr["H2000Index"] = "AIRPOT";
+            dr["ClearQty"] = 1;
+            dr["NetWeight"] = 2.300;
+            dr["GrossWeight"] = 3.00;
+            dr["UnitPrice"] = 29.09;
+            dr["Amount"] = 29.09;
+            dr["CurrencyEN"] = "USD";
+            dr["MadeInEN"] = "China";
+            dr["HSCode"] = "9617009000";
+            dt.Rows.Add(dr);
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("BuyerName", "Bunn（Shanghai）Trading CO., LTD");
+            dic.Add("CID", "BUNN2020-25");
+            dic.Add("BuyerAddress", "A208, No. 1618 Yishan Road, Minhang District, Shanghai, China 201103");
+            dic.Add("Date", "2020-2-28");
+            dic.Add("SellerName", "BUNN-O-MATIC CORPORATION");
+            dic.Add("SellerAddress", "1400 Stevenson Drive, Springfield, illinois, USA, 62703");
+            dic.Add("Origin", "China");
+            #endregion
+
+            Dictionary<string, string> dic2 = new Dictionary<string, string>();
+            dic2.Add("vendName1", "11111");
+            dic2.Add("vendName2", "222222");
+            dic2.Add("vendName3", "333333");
+            dic2.Add("Address", "44444");
+            dic2.Add("Date", DateTime.Now.ToString("yyyy-MM-dd"));
+            List<InvoiceModel> list = DataTableToList<InvoiceModel>(dt);
+            #region 生成word
+            bool sn = tf.NCRDocDic(path1, path2, list, dic);
+            if (sn)
+            {
+                MessageBox.Show("生成成功。");
+            }
+            #endregion
+            #region word转换PDF
+            bool k = tf.WordToPDF(path2, path3);
+            if (k)
             {
                 MessageBox.Show("生成成功。");
             }
@@ -1493,5 +1662,55 @@ namespace PDF_Service
         {
             return Math.Sqrt(x).ToString();
         }
+    }
+    public class InvoiceModel
+    {
+        public string rowindex { get; set; }
+
+        /// <summary>
+        /// ProductCode
+        /// </summary>
+        public string ProductCode { get; set; }
+        /// <summary>
+        /// ProductName
+        /// </summary>
+        public string ProductName { get; set; }
+        /// <summary>
+        /// ProductDescrEN
+        /// </summary>
+        public string ProductDescrEN { get; set; }
+        /// <summary>
+        /// H2000Index
+        /// </summary>
+        public string H2000Index { get; set; }
+        /// <summary>
+        /// HSCode
+        /// </summary>
+        public string HSCode { get; set; }
+        /// <summary>
+        /// ClearQty
+        /// </summary>
+        public decimal ClearQty { get; set; }
+        /// <summary>
+        /// Unit Price
+        /// </summary>
+        public decimal UnitPrice { get; set; }
+        /// <summary>
+        /// CurrencyEN
+        /// </summary>
+        public string CurrencyEN { get; set; }
+        /// <summary>
+        /// GrossWeight
+        /// </summary>
+        public decimal GrossWeight { get; set; }
+        /// <summary>
+        /// MadeInEN
+        /// </summary>
+        public string MadeInEN { get; set; }
+        /// <summary>
+        /// Net Weight
+        /// </summary>
+        public decimal NetWeight { get; set; }
+        public decimal Amount { set; get; }
     }
 }

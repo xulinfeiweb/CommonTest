@@ -72,7 +72,6 @@ namespace Common
                 }
                 #region 插入统计行
                 decimal sum = list.Sum(p => p.ClearQty);
-                decimal NetWeight = list.Sum(p => (p.ClearQty * p.NetWeight));
                 decimal Amount = list.Sum(p => (p.ClearQty * p.UnitPrice));
                 string Currency = list[0].CurrencyEN;
                 //插入统计行
