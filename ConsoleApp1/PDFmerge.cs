@@ -63,6 +63,9 @@ namespace ConsoleApp1
         {
             try
             {
+                //Rectangle pageSize = new Rectangle(216f, 720f);
+                //Document doc = new Document(pageSize, 30, 30, 50, 50);//设置页面的大小
+
                 List<PdfReader> readerList = new List<PdfReader>();
                 Rectangle rl = PageSize.A4.Rotate();
                 Document document = new Document(rl, 20, 20, 0, 0);

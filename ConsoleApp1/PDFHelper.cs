@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -26,10 +27,10 @@ namespace ConsoleApp1
         {
             PDFFile pdfFile = PDFFile.Open(pdfInputPath);
             pathName = imageOutputPath + "\\" + DateTime.Now.ToString("yyyyMMddhhmmss") + "\\";
-
             for (int i = 0; i < pdfFile.PageCount; i++)
             {
                 Bitmap pageImage = pdfFile.GetPageImage(i, 56 * (int)def);
+
                 //创建目标路径
                 Directory.CreateDirectory(pathName);
                 pageImage.Save(pathName + i.ToString() + "." + ift.ToString(), ift);
@@ -37,6 +38,89 @@ namespace ConsoleApp1
             }
             pdfFile.Dispose();
         }
+        /// <summary>
+        /// 将PDF文档转换为图片的方法
+        /// </summary>
+        /// <param name="pdfInputPath">PDF文件路径</param>
+        /// <param name="imageOutputPath">图片输出完整路径(包括文件名)</param>
+        /// <param name="startPageNum">从PDF文档的第几页开始转换</param>
+        /// <param name="endPageNum">从PDF文档的第几页开始停止转换</param>
+        /// <param name="imageFormat">设置所需图片格式</param>
+        /// <param name="definition">设置图片的清晰度，数字越大越清晰</param>
+        private static void ConvertPdf2Image(string pdfInputPath, string imageOutputPath,
+             int startPageNum, int endPageNum, ImageFormat imageFormat, int definition)
+        {
+
+            PDFFile pdfFile = PDFFile.Open(pdfInputPath);
+
+            if (startPageNum <= 0)
+            {
+                startPageNum = 1;
+            }
+
+            if (endPageNum > pdfFile.PageCount)
+            {
+                endPageNum = pdfFile.PageCount;
+            }
+
+            if (startPageNum > endPageNum)
+            {
+                int tempPageNum = startPageNum;
+                startPageNum = endPageNum;
+                endPageNum = startPageNum;
+            }
+
+            var bitMap = new Bitmap[endPageNum];
+
+            for (int i = startPageNum; i <= endPageNum; i++)
+            {
+                Bitmap pageImage = pdfFile.GetPageImage(i - 1, 56 * definition);
+                Bitmap newPageImage = new Bitmap(pageImage.Width / 4, pageImage.Height / 4);
+
+                Graphics g = Graphics.FromImage(newPageImage);
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                //重新画图的时候Y轴减去130，高度也减去130  这样水印就看不到了
+                g.DrawImage(pageImage, new Rectangle(0, 0, pageImage.Width / 4, pageImage.Height / 4),
+                    new Rectangle(0, 130, pageImage.Width, pageImage.Height - 130), GraphicsUnit.Pixel);
+
+                bitMap[i - 1] = newPageImage;
+                g.Dispose();
+            }
+
+            //合并图片
+            var mergerImg = MergerImg(bitMap);
+            //保存图片
+            mergerImg.Save(imageOutputPath, imageFormat);
+            pdfFile.Dispose();
+        }
+
+        /// <summary>
+        /// 合并图片
+        /// </summary>
+        /// <param name="maps"></param>
+        /// <returns></returns>
+        private static Bitmap MergerImg(params Bitmap[] maps)
+        {
+            int i = maps.Length;
+
+            if (i == 0)
+                throw new Exception("图片数不能够为0");
+            else if (i == 1)
+                return maps[0];
+
+            //创建要显示的图片对象,根据参数的个数设置宽度
+            Bitmap backgroudImg = new Bitmap(maps[0].Width, i * maps[0].Height);
+            Graphics g = Graphics.FromImage(backgroudImg);
+            //清除画布,背景设置为白色
+            g.Clear(System.Drawing.Color.White);
+            for (int j = 0; j < i; j++)
+            {
+                g.DrawImage(maps[j], 0, j * maps[j].Height, maps[j].Width, maps[j].Height);
+            }
+            g.Dispose();
+            return backgroudImg;
+        }
+
         /// <summary>
         /// 批量将图片转换为PDF文档的方法
         /// </summary>

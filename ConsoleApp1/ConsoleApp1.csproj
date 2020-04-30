@@ -38,7 +38,8 @@
     <Reference Include="itextsharp, Version=5.5.13.1, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13.1\lib\itextsharp.dll</HintPath>
     </Reference>
-    <Reference Include="O2S.Components.PDFRender4NET">
+    <Reference Include="O2S.Components.PDFRender4NET, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>O2SComponentsPDFRender4NET_jb51\O2S.Components.PDFRender4NET\O2S.Components.PDFRender4NET.dll</HintPath>
     </Reference>
     <Reference Include="PdfiumViewer, Version=2.13.0.0, Culture=neutral, PublicKeyToken=91e4789cfb0609e0, processorArchitecture=MSIL">

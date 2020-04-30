@@ -341,20 +341,17 @@ namespace PDF_Service.GenerateWord
             row.Cells.Add(CreateCell(doc, "", 6.5, false, 1, 0));
             return row;
         }
-        public bool WordToPDF(string path, string savePath)
+        /// <summary>
+        /// word转 PDF
+        /// </summary>
+        /// <param name="wordPath">word路径</param>
+        /// <param name="savePath">PDF保存路径</param>
+        /// <returns></returns>
+        public bool WordToPDF(string wordPath, string savePath)
         {
-            bool result = false;
-            Document d = new Document(path);
-            try
-            {
-                d.Save(savePath, SaveFormat.Pdf);
-                result = true;
-            }
-            catch (Exception ex)
-            {
-                result = false;
-            }
-            return result;
+            Document d = new Document(wordPath);
+            d.Save(savePath, SaveFormat.Pdf);
+            return true;
         }
     }
 }

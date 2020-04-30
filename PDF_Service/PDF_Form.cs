@@ -16,6 +16,7 @@ using System.Windows.Forms;
 using System.Reflection;
 using TestReflex;
 using System.Xml;
+using System.Text;
 
 namespace PDF_Service
 {
@@ -1636,6 +1637,52 @@ namespace PDF_Service
                 MessageBox.Show("生成成功。");
             }
             #endregion
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string WantedPath = Application.StartupPath.Substring(0, Application.StartupPath.LastIndexOf(@"\"));
+            string WantedPath2 = WantedPath.Substring(0, WantedPath.LastIndexOf(@"\"));
+            string path = WantedPath2 + "\\word\\TF(SHA)-情况说明(郑州).doc";
+            string path1 = WantedPath2 + "\\word\\TF(SHA)-情况说明(郑州)2.pdf";
+            GenerateWord.TFUtility tf = new GenerateWord.TFUtility();
+            bool k = tf.WordToPDF(path, path1);
+            if (k)
+            {
+                MessageBox.Show("生成成功。");
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtID.Text))
+            {
+                MessageBox.Show("请选择PDF文件", "提示");
+            }
+            else
+            {
+                try
+                {
+                    StringBuilder sb = new StringBuilder();
+                    PdfReader reader = new PdfReader(txtID.Text);
+                    PdfReaderContentParser parser = new PdfReaderContentParser(reader);
+                    int Pdf_Pages = reader.NumberOfPages;
+                    ITextExtractionStrategy strategy;
+                    for (int i = 1; i <= Pdf_Pages; i++)
+                    {
+                        //当前PDF页面的上下左右
+                        Rectangle mediabox = reader.GetPageSize(i);
+                        RenderFilter[] filter = { new RegionTextRenderFilter(new Rectangle(mediabox.Left + 300, mediabox.Bottom + 400, mediabox.Right - 100, mediabox.Top - 20)) };
+                        strategy = new FilteredTextRenderListener(new LocationTextExtractionStrategy(), filter);
+                        sb.AppendLine(PdfTextExtractor.GetTextFromPage(reader, i, strategy));
+                    }
+                    richTextBox.Text = sb.ToString();
+                }
+                catch (Exception ex)
+                {
+                    richTextBox.Text = ex.Message;
+                }
+            }
         }
     }
 

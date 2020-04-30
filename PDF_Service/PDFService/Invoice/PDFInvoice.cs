@@ -275,7 +275,7 @@ namespace Common
             {
                 Font font = JointacFont.FontCN();
                 if (list[i].IsFather == 1)
-                    font = JointacFont.FontCN(9, BOLD);
+                    font = JointacFont.FontCN(9, Font.BOLD);
                 cell = CreatePdfPCellNoBorder(new Phrase(list[i].rowindex.ToString(), JointacFont.FontCN(8)), 1, 1, Element.ALIGN_CENTER, Element.ALIGN_MIDDLE);
                 cell.FixedHeight = LINE_HEIGHT;
                 table.AddCell(cell);
