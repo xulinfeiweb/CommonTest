@@ -201,6 +201,9 @@
     <None Include="Temp\BUNN\BUNN模板.doc" />
     <None Include="Temp\TF%28SHA%29\TF%28SHA%29模板.doc" />
     <None Include="Temp\分拨结关\分拨结关模板.doc" />
+    <None Include="word\BUNN\DRAEGER模板.doc" />
+    <None Include="word\DRAEGER模板.doc" />
+    <None Include="word\TF%28SHA%29-情况说明%28郑州%29.doc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -239,7 +242,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="pdf\BUNN\" />
-    <Folder Include="word\BUNN\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="dll\Aspose.Words.dll" />

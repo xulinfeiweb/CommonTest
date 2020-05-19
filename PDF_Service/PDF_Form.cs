@@ -1643,8 +1643,8 @@ namespace PDF_Service
         {
             string WantedPath = Application.StartupPath.Substring(0, Application.StartupPath.LastIndexOf(@"\"));
             string WantedPath2 = WantedPath.Substring(0, WantedPath.LastIndexOf(@"\"));
-            string path = WantedPath2 + "\\word\\TF(SHA)-情况说明(郑州).doc";
-            string path1 = WantedPath2 + "\\word\\TF(SHA)-情况说明(郑州)2.pdf";
+            string path = WantedPath2 + "\\word\\BUNN\\DRAEGER模板.doc";
+            string path1 = WantedPath2 + "\\word\\DRAEGER模板2.pdf";
             GenerateWord.TFUtility tf = new GenerateWord.TFUtility();
             bool k = tf.WordToPDF(path, path1);
             if (k)
